@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SistemaOrdenes.Data;
+using SistemaOrdenes.Entidades;
 using SistemaOrdenes.Models;
 using System.Diagnostics;
 
@@ -7,30 +7,34 @@ namespace SistemaOrdenes.Services
 {
     public class UsuarioService
     {
-        private readonly DbPruebaOrdenesContext _context;
-        public UsuarioService( DbPruebaOrdenesContext context)
+        private readonly DbProyectoAnalisisIiContext context;
+        public UsuarioService(DbProyectoAnalisisIiContext context)
         {
             
-            _context = context;
+            this.context = context;
 
         }
-        public IEnumerable<Usuarios> ObtenerJefes()
+
+        //RETORNA LA LISTA DE USUARIOS JEFES
+        public async Task<IEnumerable<TbUsuario>> ObtenerJefes()
         {
-            return _context.TbUsuarios.Where(u => u.IdRol == 2).ToList();
+            return context.TbUsuarios.Where(u => u.IdRol == 2).ToList();
         }
         public IEnumerable<TbRole> ObtenerRoles()
         {
-            return _context.TbRoles.ToList();
+            return context.TbRoles.ToList();
         }
 
-        public async Task<bool> RegistrarUsuario(Usuarios usuario)
+
+        //REGISTRA UN USUARIO
+        public async Task<bool> RegistrarUsuario(TbUsuario usuario)
         {
             if (usuario != null)
             {
                 usuario.Restablecer = false;
                 usuario.Confirmado = false;
-                _context.Add(usuario);
-                await _context.SaveChangesAsync();
+                context.Add(usuario);
+                await context.SaveChangesAsync();
                 return true;
             }
             else
@@ -45,14 +49,14 @@ namespace SistemaOrdenes.Services
             bool respuesta = false;
             try
             {
-                var usuario = await _context.TbUsuarios.FirstOrDefaultAsync(u => u.Token == token);
+                var usuario = await context.TbUsuarios.FirstOrDefaultAsync(u => u.Token == token);
                 if (usuario != null)
                 {
                     usuario.Restablecer = restablecer;
                     usuario.Clave = clave;
 
-                    _context.TbUsuarios.Update(usuario);
-                    int filasAfectadas = await _context.SaveChangesAsync();
+                    context.TbUsuarios.Update(usuario);
+                    int filasAfectadas = await context.SaveChangesAsync();
                      
                     if (filasAfectadas > 0)
                         respuesta = true;
@@ -71,11 +75,11 @@ namespace SistemaOrdenes.Services
             }
         }
 
-        public async Task<Usuarios?> ConfirmarAsync(string token)
+        public async Task<TbUsuario?> ConfirmarAsync(string token)
         {
             try
             { 
-                var usuario = await _context.TbUsuarios.FirstOrDefaultAsync(u => u.Token == token);
+                var usuario = await context.TbUsuarios.FirstOrDefaultAsync(u => u.Token == token);
                 if (usuario != null)
                 {
                     return usuario;
@@ -94,7 +98,7 @@ namespace SistemaOrdenes.Services
         {
             try
             {
-                var usuario = _context.TbUsuarios.FirstOrDefault(u => u.Token == token);
+                var usuario = context.TbUsuarios.FirstOrDefault(u => u.Token == token);
                 if (usuario != null )
                 {
                     if (usuario.Confirmado == true)
@@ -103,7 +107,7 @@ namespace SistemaOrdenes.Services
                     }
                     usuario.Clave = clave;
                     usuario.Confirmado = true;
-                    await _context.SaveChangesAsync();
+                    await context.SaveChangesAsync();
                     return true;
                 }       
                 return false;

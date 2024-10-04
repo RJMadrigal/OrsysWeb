@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol.Resources;
-using SistemaOrdenes.Data;
+using SistemaOrdenes.Entidades;
 using SistemaOrdenes.Models;
 using SistemaOrdenes.Services;
 using SistemaOrdenes.Services.Interfaces;
@@ -20,16 +20,17 @@ namespace SistemaOrdenes.Controllers
 {
     public class UsuariosController : Controller
     {
-        private readonly DbPruebaOrdenesContext _context;
-        private readonly UsuarioData _usuarioData;
+        private readonly DbProyectoAnalisisIiContext _context;
+        private readonly IRepositorioUsuarios repositorioUsuarios;
+
         //private readonly EmailService _emailService;    
         private readonly UsuarioService _usuarioService;
         private readonly IEmailService _emailService;
 
-        public UsuariosController(DbPruebaOrdenesContext context, UsuarioData usuarioData, IEmailService emailService, UsuarioService usuarioService)
+        public UsuariosController(DbProyectoAnalisisIiContext context, IRepositorioUsuarios repositorioUsuarios, IEmailService emailService, UsuarioService usuarioService)
         {
             _context = context;
-            _usuarioData = usuarioData;
+            this.repositorioUsuarios = repositorioUsuarios;
             _emailService = emailService;
             _usuarioService = usuarioService;
         }
@@ -70,7 +71,7 @@ namespace SistemaOrdenes.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdUsuario,Nombre,Usuario,Correo,IdRol,IdJefe")] Usuarios usuarios, [FromServices] IWebHostEnvironment env)
+        public async Task<IActionResult> Create([Bind("IdUsuario,Nombre,Usuario,Correo,IdRol,IdJefe")] Usuario usuarios, [FromServices] IWebHostEnvironment env)
         {
             if (ModelState.IsValid)
             { 

@@ -7,9 +7,11 @@ using SistemaOrdenes.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Services.AddTransient<IRepositorioUsuarios, RepositorioUsuarios>();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<DbPruebaOrdenesContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("conexion")));
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
