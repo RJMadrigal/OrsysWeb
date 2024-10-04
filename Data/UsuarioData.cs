@@ -24,6 +24,7 @@ namespace SistemaOrdenes.Data
             {
                 var usuario = await _context.TbUsuarios.FirstOrDefaultAsync(u => u.Correo == Correo && u.Clave == Clave);
                 
+
                 if (usuario != null) 
                 {
                     return usuario;
