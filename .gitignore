@@ -1,0 +1,12 @@
+﻿# Ignorar la carpeta .vs de Visual Studio
+.vs/
+
+# Ignorar binarios de compilación
+bin/
+obj/
+
+# Ignorar archivos de configuración de Visual Studio
+*.suo
+*.user
+*.dtbcache.v2
+*.vscode/

@@ -1,0 +1,66 @@
+﻿@model IEnumerable<SistemaOrdenes.Models.Usuarios>
+
+@{
+    ViewData["Title"] = "Listado usuarios";
+}
+
+
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <div>
+            <i class="fas fa-table me-1"></i>
+            Listado de usuarios del sistema.
+         </div>
+        <div>
+            <a class="btn btn-primary" asp-action="Create">Registrar un nuevo usuario.</a>
+        </div>
+    </div>
+    <div>
+ 
+    </div>
+    <div class="card-body">
+        <table id="datatablesSimple" class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Usuario</th>
+                    <th scope="col">Correo</th>
+                    <th scope="col">Restablecer</th>
+                    <th scope="col">Confirmado</th>
+                    <th scope="col">Jefe</th>
+                    <th scope="col">Rol</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Usuario)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Correo)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Restablecer)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Confirmado)</td>
+                        <td>@Html.DisplayFor(modelItem => item.IdJefeNavigation.Nombre)</td>
+                        <td>@Html.DisplayFor(modelItem => item.IdRolNavigation.NombreRol)</td>
+                        <td>
+                            <a class="btn btn-sm btn-info" asp-action="Edit" asp-route-id="@item.IdUsuario">Edit</a>
+                            <a class="btn btn-sm btn-secondary" asp-action="Details" asp-route-id="@item.IdUsuario">Details</a>
+                            <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.IdUsuario">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
