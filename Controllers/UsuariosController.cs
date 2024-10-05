@@ -40,62 +40,50 @@ namespace SistemaOrdenes.Controllers
             return View(await dbPruebaOrdenesContext.ToListAsync());
         }
 
-        // GET: Usuarios/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var usuarios = await _context.TbUsuarios
-                .Include(u => u.IdJefeNavigation)
-                .Include(u => u.IdRolNavigation)
-                .FirstOrDefaultAsync(m => m.IdUsuario == id);
-            if (usuarios == null)
-            {
-                return NotFound();
-            }
-
-            return View(usuarios);
-        }
-
-        // GET: Usuarios/Create
+        //GET AL ENTRAR AL FORM PARA CREAR UN USUARIO
+        [HttpGet]
         public IActionResult Create()
         {
+            //CARGA LA LISTA DE ROLES Y JEFES
             CargarListasDeSeleccion();
             return View();
         }
 
+
+        //POST PARA CREAR EL USUARIO
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdUsuario,Nombre,Usuario,Correo,IdRol,IdJefe")] TbUsuario usuarios, [FromServices] IWebHostEnvironment env)
         {
-            if (ModelState.IsValid)
-            { 
-                try
-                {
-                    usuarios.Clave = GenerateToken.GenerateTempPass();
-                    usuarios.Token = GenerateToken.Generate();
-       
-                    await _usuarioService.RegistrarUsuario(usuarios); 
-                    
-                    var emailResult = await _emailService.SendConfirmationEmail(usuarios.Correo,usuarios.Nombre,usuarios.Token);
-
-                    //  ViewBag.Creado = true;
-                    //  ViewBag.Mensaje = $"La cuenta ha sido creada. Hemos enviado un mensaje al correo {usuarios.Correo} para confirmar su cuenta";
-                    
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine("Error al guardar en la base de datos: " + ex.Message);
-                }
+            if (!ModelState.IsValid)
+            {
+                return View(usuarios);
+               
             }
-            return View(usuarios);
+
+            //SE GENERA UNA CLAVE
+            usuarios.Clave = GenerateToken.GenerateTempPass();
+
+            //SE GENERA UN TOKEN
+            usuarios.Token = GenerateToken.Generate();
+
+            //SE ENVIA EL MODELO MEDIANTE EL SERVICIO QUE REGISTRA EL USUARIO
+            await _usuarioService.RegistrarUsuario(usuarios);
+
+            //SE ENVÍA UN EMAIL AL USUARIO, ENVIANDO EL CORREO, EL NOMBRE Y EL TOKEN GENERADO
+            var emailResult = await _emailService.SendConfirmationEmail(usuarios.Correo, usuarios.Nombre, usuarios.Token);
+
+            //SE REDIRIGE AL INDEX
+            return RedirectToAction("Index");
+            
+
         }
 
-        // GET: Usuarios/Edit/5
+
+
+        //GET AL INGRESAR A EDITAR EL USUARIO
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -103,13 +91,16 @@ namespace SistemaOrdenes.Controllers
                 return NotFound();
             }
 
+            //BUSCA EL USUARIO POR ID
             var usuarios = await _context.TbUsuarios.FindAsync(id);
+
+            //SI NO EXISTE EL USUARIO, SE MUESTRA UN MENSAJE
             if (usuarios == null)
             {
                 return NotFound();
             }
 
-
+            //SE MAPEA LOS DATOS AL MODELO
             var viewModel = new EditarUsuarioViewModel
             {
                 IdUsuario = usuarios.IdUsuario,
@@ -122,27 +113,30 @@ namespace SistemaOrdenes.Controllers
                 IdJefe = usuarios.IdJefe,
             };
 
+            //CARGA LOS SELECT ITEM DE ROLES Y USUARIOS JEFES
             CargarListasDeSeleccion(viewModel.IdJefe, viewModel.IdRol);
             return View(viewModel);
         }
 
 
+
+        //POST PARA EDITAR EL USUARIO
         [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> Edit(EditarUsuarioViewModel modelo) //[Bind("IdUsuario,Nombre,Usuario,Correo,Restablecer,Confirmado,IdRol,IdJefe")] )
         {
 
+            //SE VALIDA EL MODELO
             if (!ModelState.IsValid)
             {
                 return View(modelo);
             }
 
-            //SE OBTIENE EL ID
-
             try
             {
+                //SE ENVIA EL MODELO PARA EDITAR EL USUARIO
                 await repositorioUsuarios.EditarUser(modelo);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -162,52 +156,77 @@ namespace SistemaOrdenes.Controllers
 
         }
 
-        // GET: Usuarios/Delete/5
+
+
+        //GET AL SELECCIONAR EL BOTON DE ELIMINAR USUARIO, EL CUAL CARGA LOS DATOS DEL USUARIO A ELIMINAR
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
+            //SE VALIDA EL ID
             if (id == null)
             {
                 return NotFound();
             }
 
+            //SE OBTIENE EL USUARIO MEDIANTE EL ID
             var usuarios = await _context.TbUsuarios
                 .Include(u => u.IdJefeNavigation)
                 .Include(u => u.IdRolNavigation)
                 .FirstOrDefaultAsync(m => m.IdUsuario == id);
+
+            //SE VALIDA SI EL USUARIO EXISTE...
             if (usuarios == null)
             {
                 return NotFound();
             }
 
+            //DEVUELVE LA VISTA CON LOS DATOS
             return View(usuarios);
         }
 
+
+
+
         // POST: Usuarios/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            //SE OBTIENE EL USUARIO A ELIMINAR MEDIANTE EL ID
             var usuarios = await _context.TbUsuarios.FindAsync(id);
-            if (usuarios != null)
+
+
+            //SE VALIDA SI EL USUARIO EXISTE...
+            if (usuarios == null)
             {
-                _context.TbUsuarios.Remove(usuarios);
+                return NotFound();
             }
 
+            //SE ELIMINA EL USUARIO UTILIZANDO EF Y SE ENVIA EL MODELO
+            _context.TbUsuarios.Remove(usuarios);
+
+            //SE GUARDA LOS CAMBIOS
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            //SE REDIRIGE AL INDEX
+            return RedirectToAction("Index");
         }
 
  
+
+        //METODO PARA CARGAR EN LISTAS LOS USUARIOS JEFES Y LOS ROLES
         private void CargarListasDeSeleccion(int? idJefe = null, int? idRol = null)
         {
             ViewBag.Jefes = new SelectList(_usuarioService.ObtenerJefes(), "IdUsuario", "Nombre", idJefe);
             ViewBag.Roles = new SelectList(_usuarioService.ObtenerRoles(), "IdRol", "NombreRol", idRol);
         }
+
+
+        //METODO QUE VALIDA SI EL USUARIO EXISTE
         private bool UsuariosExists(int id)
         {
             return _context.TbUsuarios.Any(e => e.IdUsuario == id);
         }
-
 
 
 
