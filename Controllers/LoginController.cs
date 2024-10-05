@@ -29,27 +29,19 @@ namespace SistemaOrdenes.Controllers
         public async Task<IActionResult> Login(string Correo, string Clave)
 
         {
-            try
-            {
-                var usuario = await _usuarioData.ObtenerUsuarioPorCredenciales(Correo, HashSHA256.CSHA256(Clave));
+            var usuario = await _usuarioData.ObtenerUsuarioPorCredenciales(Correo, HashSHA256.CSHA256(Clave));
 
-                if (usuario != null)
-                {
-                    return  RedirectToAction("Index", "Home");
-                }
-                else  
-                {
-                    ViewBag.Message = "Nombre de usuario o contraseña incorrectos";
-                    return View();
-                }
-                
-            }
-            catch (Exception ex)
+            if (usuario != null)
             {
-                // Manejar la excepción
-                Console.WriteLine("Error al ejecutar el procedimiento almacenado: " + ex.Message);
+                return  RedirectToAction("Index", "Home");
+            }
+            else  
+            {
+                ViewBag.Message = "Nombre de usuario o contraseña incorrectos";
                 return View();
             }
+                
+            
         }
 
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SistemaOrdenes.Models;
 
@@ -20,6 +21,7 @@ public partial class TbUsuario
     public bool? Confirmado { get; set; }
 
     public string? Token { get; set; }
+
 
     public int IdRol { get; set; }
 

@@ -17,13 +17,10 @@
                 @ViewBag.Mensaje
             </div>
         }
-        <form asp-action="Create" method="post">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="IdUsuario" class="control-label">Cedula de usuario</label>
-                <input asp-for="IdUsuario" placeholder="Formato ( 101110111 )" class="form-control" />
-                <span asp-validation-for="IdUsuario" class="text-danger"></span>
-            </div>
+            
+
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label">Nombre completo</label>
                 <input asp-for="Nombre" class="form-control" />

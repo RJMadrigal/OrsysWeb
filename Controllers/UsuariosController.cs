@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using SistemaOrdenes.Models;
 using SistemaOrdenes.Services;
 using SistemaOrdenes.Services.Interfaces;
@@ -54,19 +55,24 @@ namespace SistemaOrdenes.Controllers
         //POST PARA CREAR EL USUARIO
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdUsuario,Nombre,Usuario,Correo,IdRol,IdJefe")] TbUsuario usuarios, [FromServices] IWebHostEnvironment env)
+        public async Task<IActionResult> Create(TbUsuario usuarios)
         {
+
+            ModelState.Remove("IdRolNavigation");
+            ModelState.Remove("Clave");
+
+            //SE GENERA UNA CLAVE
+            usuarios.Clave = GenerateToken.GenerateTempPass().ToString();
+
+            //SE GENERA UN TOKEN
+            usuarios.Token = GenerateToken.Generate();
+
             if (!ModelState.IsValid)
             {
                 return View(usuarios);
                
             }
 
-            //SE GENERA UNA CLAVE
-            usuarios.Clave = GenerateToken.GenerateTempPass();
-
-            //SE GENERA UN TOKEN
-            usuarios.Token = GenerateToken.Generate();
 
             //SE ENVIA EL MODELO MEDIANTE EL SERVICIO QUE REGISTRA EL USUARIO
             await _usuarioService.RegistrarUsuario(usuarios);
