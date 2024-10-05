@@ -8,7 +8,7 @@ namespace SistemaOrdenes.Services
 {
     public interface IRepositorioUsuarios
     {
-        Task EditarUser(int id, EditarUsuarioViewModel usuarios);
+        Task EditarUser(EditarUsuarioViewModel usuarios);
         Task<TbUsuario> Obtener(string correo);
         Task<TbUsuario> ObtenerUsuarioPorCredenciales(string correo, string clave);
     }
@@ -34,10 +34,10 @@ namespace SistemaOrdenes.Services
 
 
         //EDITAR EL USUARIO
-        public async Task EditarUser(int id, EditarUsuarioViewModel usuario)
+        public async Task EditarUser(EditarUsuarioViewModel usuario)
         {
             //SE BUSCA EL USUARIO POR ID
-            var UsuarioEdit = await context.TbUsuarios.FindAsync(id);
+            var UsuarioEdit = await context.TbUsuarios.FindAsync(usuario.IdUsuario);
 
             //SE VERIFICA SI ES NULO
             if (UsuarioEdit == null)

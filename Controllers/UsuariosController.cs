@@ -109,33 +109,44 @@ namespace SistemaOrdenes.Controllers
                 return NotFound();
             }
 
-            CargarListasDeSeleccion(usuarios.IdJefe, usuarios.IdRol);
-            return View(usuarios);
+
+            var viewModel = new EditarUsuarioViewModel
+            {
+                IdUsuario = usuarios.IdUsuario,
+                Nombre = usuarios.Nombre,
+                Usuario = usuarios.Usuario,
+                Correo = usuarios.Correo,
+                Restablecer = usuarios.Restablecer,
+                Confirmado = usuarios.Confirmado,
+                IdRol = usuarios.IdRol,
+                IdJefe = usuarios.IdJefe,
+            };
+
+            CargarListasDeSeleccion(viewModel.IdJefe, viewModel.IdRol);
+            return View(viewModel);
         }
 
 
-        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, EditarUsuarioViewModel usuario) //[Bind("IdUsuario,Nombre,Usuario,Correo,Restablecer,Confirmado,IdRol,IdJefe")] )
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditarUsuarioViewModel modelo) //[Bind("IdUsuario,Nombre,Usuario,Correo,Restablecer,Confirmado,IdRol,IdJefe")] )
         {
-            if (id != usuario.IdUsuario)
-            {
-                return NotFound();
-            }
 
             if (!ModelState.IsValid)
             {
-                return View(usuario);
+                return View(modelo);
             }
+
+            //SE OBTIENE EL ID
 
             try
             {
-                await repositorioUsuarios.EditarUser(id, usuario);
+                await repositorioUsuarios.EditarUser(modelo);
                 return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!UsuariosExists(usuario.IdUsuario))
+                if (!UsuariosExists(modelo.IdUsuario))
                 {
                     return NotFound();
                 }
