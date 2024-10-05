@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace SistemaOrdenes.Entidades;
+namespace SistemaOrdenes.Models;
 
 public partial class DbProyectoAnalisisIiContext : DbContext
 {
@@ -23,8 +23,12 @@ public partial class DbProyectoAnalisisIiContext : DbContext
 
     public virtual DbSet<TbUsuario> TbUsuarios { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Name=DefaultConnection");
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //    => optionsBuilder.UseSqlServer("Name=DefaultConnection");
+
+
+
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

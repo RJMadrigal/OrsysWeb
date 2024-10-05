@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Security.Claims;
 using SistemaOrdenes.Services;
-using SistemaOrdenes.Data;
 using SistemaOrdenes.Models;
 using static SistemaOrdenes.Services.EmailService;
 
@@ -14,11 +13,11 @@ namespace SistemaOrdenes.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly UsuarioData _usuarioData;
+        private readonly IRepositorioUsuarios _usuarioData;
         
-        public LoginController(UsuarioData usuarioData)
+        public LoginController(IRepositorioUsuarios usuarioData)
         {
-            _usuarioData = usuarioData ?? throw new ArgumentNullException(nameof(usuarioData));  
+            _usuarioData = usuarioData;
         }
 
         public IActionResult Login()

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SistemaOrdenes.BD;
-using SistemaOrdenes.Entidades;
 using SistemaOrdenes.Models;
 using System.Diagnostics;
 using System.Net;
@@ -9,9 +8,9 @@ namespace SistemaOrdenes.Services
 {
     public interface IRepositorioUsuarios
     {
-        Task EditarUser(int id, Usuario usuarios);
-        Task<Usuario?> Obtener(string correo);
-        Task<Usuario> ObtenerUsuarioPorCredenciales(string correo, string clave);
+        Task EditarUser(int id, EditarUsuarioViewModel usuarios);
+        Task<TbUsuario> Obtener(string correo);
+        Task<TbUsuario> ObtenerUsuarioPorCredenciales(string correo, string clave);
     }
 
 
@@ -26,48 +25,35 @@ namespace SistemaOrdenes.Services
 
 
         //OBTIENE EL USUARIO POR LA CREDENCIAL
-        public async Task<Usuario> ObtenerUsuarioPorCredenciales(string correo, string clave)
+        public async Task<TbUsuario?> ObtenerUsuarioPorCredenciales(string correo, string clave)
         {
             //SE OBTIENE EL USUARIO DE LA BD
-            var usuario = await context.TbUsuarios
+            return await context.TbUsuarios
                 .FirstOrDefaultAsync(u => u.Correo.ToLower() == correo.ToLower() && u.Clave == clave);
-
-
-            //SE MAPEA
-            return new Usuario
-            {
-                IdUsuario = usuario.IdUsuario,
-                Nombre = usuario.Nombre,
-                NombreUsuario = usuario.Usuario,
-                Correo = usuario.Correo,
-                Clave = usuario.Clave,
-                Restablecer = usuario.Restablecer,
-                Confirmado = usuario.Confirmado,
-                Token = usuario.Token,
-                IdRol = usuario.IdRol,
-                IdJefe = usuario.IdJefe
-            };
         }
 
 
         //EDITAR EL USUARIO
-        public async Task EditarUser(int id, Usuario usuarios)
+        public async Task EditarUser(int id, EditarUsuarioViewModel usuario)
         {
             //SE BUSCA EL USUARIO POR ID
             var UsuarioEdit = await context.TbUsuarios.FindAsync(id);
 
+            //SE VERIFICA SI ES NULO
             if (UsuarioEdit == null)
             {
                 throw new ArgumentNullException(nameof(UsuarioEdit), "Usuario no encontrado.");
             }
 
-            UsuarioEdit.Nombre = usuarios.Nombre;
-            UsuarioEdit.Usuario = usuarios.NombreUsuario;
-            UsuarioEdit.Correo = usuarios.Correo;
-            UsuarioEdit.Restablecer = usuarios.Restablecer;
-            UsuarioEdit.Confirmado = usuarios.Confirmado;
-            UsuarioEdit.IdRol = usuarios.IdRol;
-            UsuarioEdit.IdJefe = usuarios.IdJefe;
+
+            //SE PASA LOS DATOS MEDIANTE ENTITY
+            UsuarioEdit.Nombre = usuario.Nombre;
+            UsuarioEdit.Usuario = usuario.Usuario;
+            UsuarioEdit.Correo = usuario.Correo;
+            UsuarioEdit.Restablecer = usuario.Restablecer;
+            UsuarioEdit.Confirmado = usuario.Confirmado;
+            UsuarioEdit.IdRol = usuario.IdRol;
+            UsuarioEdit.IdJefe = usuario.IdJefe;
 
             //SE ACTUALIZA
             context.Update(UsuarioEdit);
@@ -79,13 +65,13 @@ namespace SistemaOrdenes.Services
 
 
         //OBTIENE EL USUARIO POR CORREO
-        public async Task<Usuario?> Obtener(string correo)
+        public async Task<TbUsuario?> Obtener(string correo)
         {
             try
             {
                 var usuario = await context.TbUsuarios
                    .Where(u => u.Correo == correo)
-                   .Select(u => new Usuario
+                   .Select(u => new TbUsuario
                    {
                        Nombre = u.Nombre,
                        Clave = u.Clave,

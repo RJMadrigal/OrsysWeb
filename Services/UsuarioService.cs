@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SistemaOrdenes.Entidades;
 using SistemaOrdenes.Models;
 using System.Diagnostics;
 
@@ -16,7 +15,7 @@ namespace SistemaOrdenes.Services
         }
 
         //RETORNA LA LISTA DE USUARIOS JEFES
-        public async Task<IEnumerable<TbUsuario>> ObtenerJefes()
+        public IEnumerable<TbUsuario> ObtenerJefes()
         {
             return context.TbUsuarios.Where(u => u.IdRol == 2).ToList();
         }

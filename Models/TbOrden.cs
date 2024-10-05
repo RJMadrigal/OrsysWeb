@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SistemaOrdenes.Entidades;
+namespace SistemaOrdenes.Models;
 
 public partial class TbOrden
 {

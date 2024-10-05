@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Resources;
-using SistemaOrdenes.Entidades;
 using SistemaOrdenes.Models;
 using SistemaOrdenes.Services;
 using SistemaOrdenes.Services.Interfaces;
@@ -71,7 +69,7 @@ namespace SistemaOrdenes.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdUsuario,Nombre,Usuario,Correo,IdRol,IdJefe")] Usuario usuarios, [FromServices] IWebHostEnvironment env)
+        public async Task<IActionResult> Create([Bind("IdUsuario,Nombre,Usuario,Correo,IdRol,IdJefe")] TbUsuario usuarios, [FromServices] IWebHostEnvironment env)
         {
             if (ModelState.IsValid)
             { 
@@ -118,38 +116,39 @@ namespace SistemaOrdenes.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdUsuario,Nombre,Usuario,Correo,Restablecer,Confirmado,IdRol,IdJefe")] Usuarios usuarios)
+        public async Task<IActionResult> Edit(int id, EditarUsuarioViewModel usuario) //[Bind("IdUsuario,Nombre,Usuario,Correo,Restablecer,Confirmado,IdRol,IdJefe")] )
         {
-            if (id != usuarios.IdUsuario)
+            if (id != usuario.IdUsuario)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
+                return View(usuario);
+            }
+
+            try
+            {
+                await repositorioUsuarios.EditarUser(id, usuario);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                if (!UsuariosExists(usuario.IdUsuario))
                 {
-                    await _usuarioData.EditarUser(id, usuarios);   
-                    return RedirectToAction(nameof(Index));
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException ex)
-                {
-                    if (!UsuariosExists(usuarios.IdUsuario))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {   
-                        throw;
-                    }
-                }
-                catch (Exception ex)
+                else
                 {
                     throw;
                 }
             }
+            catch (Exception ex)
+            {
+                throw;
+            }
 
-            return View(usuarios);
         }
 
         // GET: Usuarios/Delete/5
@@ -198,10 +197,16 @@ namespace SistemaOrdenes.Controllers
             return _context.TbUsuarios.Any(e => e.IdUsuario == id);
         }
 
+
+
+
+
+
         [HttpPost]
         public async Task<ActionResult> Restablecer(string correo, [FromServices] IWebHostEnvironment env)
         {
-            Usuarios usuario = await _usuarioData.Obtener(correo);
+            var usuario = await repositorioUsuarios.Obtener(correo);
+
             ViewBag.Correo = correo;
             if (usuario != null)
             {

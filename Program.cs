@@ -1,11 +1,18 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using SistemaOrdenes.Data;
 using SistemaOrdenes.Models;
 using SistemaOrdenes.Services;
 using SistemaOrdenes.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+
+// Agregar servicios al contenedor
+builder.Services.AddDbContext<DbProyectoAnalisisIiContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
 
 
 builder.Services.AddTransient<IRepositorioUsuarios, RepositorioUsuarios>();
@@ -20,11 +27,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LogoutPath = "/Login/Logout";
         options.AccessDeniedPath = "/Home/AccessDenied";
     });
-builder.Services.AddScoped<UsuarioData>(); 
 builder.Services.AddScoped<IEmailService,EmailService>(); 
 builder.Services.AddScoped<UsuarioService>();
 builder.Services.AddHttpContextAccessor();
-
+builder.Services.AddScoped<GenerateToken>();
+builder.Services.AddScoped<HashSHA256>();
 
 var app = builder.Build();
 
