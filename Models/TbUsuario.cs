@@ -8,10 +8,13 @@ public partial class TbUsuario
 {
     public int IdUsuario { get; set; }
 
+    [Required(ErrorMessage = "El campo {0} es obligatorio")]
     public string Nombre { get; set; } = null!;
 
+    [Required(ErrorMessage = "El campo {0} es obligatorio")]
     public string Usuario { get; set; } = null!;
 
+    [Required(ErrorMessage = "El campo {0} es obligatorio")]
     public string Correo { get; set; } = null!;
 
     public string Clave { get; set; } = null!;

@@ -237,38 +237,6 @@ namespace SistemaOrdenes.Controllers
 
 
 
-
-        [HttpPost]
-        public async Task<ActionResult> Restablecer(string correo, [FromServices] IWebHostEnvironment env)
-        {
-            var usuario = await repositorioUsuarios.Obtener(correo);
-
-            ViewBag.Correo = correo;
-            if (usuario != null)
-            {
-                bool respuesta = await _usuarioService.RestablecerActualizarAsync(true, usuario.Clave, usuario.Token);
-                if (respuesta)
-                {
-                    Debug.WriteLine("Correo: " + usuario.Correo);
-                    bool enviado = await _emailService.SendResetPasswordEmail(correo,usuario.Nombre,usuario.Token);
-                    if (enviado)
-                    {
-                        ViewBag.Restablecido = true;
-                        ViewBag.MensajeRestablecido = "Se ha enviado un correo electronico de restablecimiento";
-                    }
-                }
-                else
-                {
-                    ViewBag.Mensaje = "No se pudo restablecer la cuenta";
-                }
-            }
-            else
-            {
-                ViewBag.Mensaje = "No se encontraron coincidencias con el correo";
-            }
-            return RedirectToAction("Login", "Login");
-        }
-
         public async Task<ActionResult> Confirmar(string token)
         {
             var usuario = await _usuarioService.ConfirmarAsync(token);

@@ -36,6 +36,8 @@
 
   <ItemGroup>
     <Folder Include="Entidades\" />
+    <Folder Include="Views\Historial\" />
+    <Folder Include="Views\Ordenes\" />
   </ItemGroup>
 
 </Project>

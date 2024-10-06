@@ -7,6 +7,8 @@ using System.Security.Claims;
 using SistemaOrdenes.Services;
 using SistemaOrdenes.Models;
 using static SistemaOrdenes.Services.EmailService;
+using System.Diagnostics;
+using SistemaOrdenes.Services.Interfaces;
 
 
 namespace SistemaOrdenes.Controllers
@@ -14,10 +16,14 @@ namespace SistemaOrdenes.Controllers
     public class LoginController : Controller
     {
         private readonly IRepositorioUsuarios _usuarioData;
-        
-        public LoginController(IRepositorioUsuarios usuarioData)
+        private readonly UsuarioService usuarioService;
+        private readonly IEmailService emailService;
+
+        public LoginController(IRepositorioUsuarios usuarioData, UsuarioService usuarioService, IEmailService emailService)
         {
             _usuarioData = usuarioData;
+            this.usuarioService = usuarioService;
+            this.emailService = emailService;
         }
 
         public IActionResult Login()
@@ -26,22 +32,64 @@ namespace SistemaOrdenes.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(string Correo, string Clave)
-
+        public async Task<IActionResult> Login(UsuarioLoginViewModel modelo)
         {
-            var usuario = await _usuarioData.ObtenerUsuarioPorCredenciales(Correo, HashSHA256.CSHA256(Clave));
 
+            if (!ModelState.IsValid)
+            {
+                return View(modelo);
+            }
+
+            //SE OBTIENE EL USUARIO
+            var usuario = await _usuarioData.ObtenerUsuarioPorCredenciales(modelo.Correo, HashSHA256.CSHA256(modelo.Clave));
+
+            //SE VALIDA QUE NO SEA NULO
             if (usuario != null)
             {
                 return  RedirectToAction("Index", "Home");
             }
             else  
             {
-                ViewBag.Message = "Nombre de usuario o contraseña incorrectos";
-                return View();
+                ModelState.AddModelError(string.Empty, "Correo electrónico o contraseña incorrecto");
+                return View(modelo);
             }
                 
-            
+        }
+
+
+
+
+        [HttpPost]
+        public async Task<ActionResult> Restablecer(string correo /*[FromServices] IWebHostEnvironment env*/)
+        {
+
+            //SE OBTIENE EL USUARIO MEDIANTE EL CORREO
+            var usuario = await _usuarioData.Obtener(correo);
+
+            ViewBag.Correo = correo;
+            if (usuario != null)
+            {
+                bool respuesta = await usuarioService.RestablecerActualizarAsync(true, usuario.Clave, usuario.Token);
+                if (respuesta)
+                {
+                    Debug.WriteLine("Correo: " + usuario.Correo);
+                    bool enviado = await emailService.SendResetPasswordEmail(correo, usuario.Nombre, usuario.Token);
+                    if (enviado)
+                    {
+                        ViewBag.Restablecido = true;
+                        ViewBag.MensajeRestablecido = "Se ha enviado un correo electronico de restablecimiento";
+                    }
+                }
+                else
+                {
+                    ViewBag.Mensaje = "No se pudo restablecer la cuenta";
+                }
+            }
+            else
+            {
+                ViewBag.Mensaje = "No se encontraron coincidencias con el correo";
+            }
+            return RedirectToAction("Login", "Login");
         }
 
     }
