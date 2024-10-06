@@ -26,6 +26,9 @@ public partial class TbUsuario
     public string? Token { get; set; }
 
 
+    public bool? Estado { get; set; }
+
+
     public int IdRol { get; set; }
 
     public int? IdJefe { get; set; }

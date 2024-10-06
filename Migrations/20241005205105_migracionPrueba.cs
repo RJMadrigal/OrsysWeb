@@ -11,20 +11,24 @@ namespace SistemaOrdenes.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            
             migrationBuilder.CreateTable(
-                name: "tb_Roles",
-                columns: table => new
-                {
-                    ID_Rol = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NombreRol = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: false),
-                    Monto_Maximo = table.Column<decimal>(type: "decimal(10,2)", nullable: true),
-                    Monto_Minimo = table.Column<decimal>(type: "decimal(10,2)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__tb_Roles__202AD22065D5D1D5", x => x.ID_Rol);
-                });
+            name: "tb_Roles",
+            columns: table => new
+            {
+                ID_Rol = table.Column<int>(type: "int", nullable: false)
+                    .Annotation("SqlServer:Identity", "1, 1"),
+                NombreRol = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: false),
+                Monto_Maximo = table.Column<decimal>(type: "decimal(10,2)", nullable: true),
+                Monto_Minimo = table.Column<decimal>(type: "decimal(10,2)", nullable: true)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("PK__tb_Roles__202AD22065D5D1D5", x => x.ID_Rol);
+            });
+
+
+                
 
             migrationBuilder.CreateTable(
                 name: "tb_Usuario",
