@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="BD\bdContext.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\assets\demo\chart-area-demo.js" />
     <None Include="wwwroot\assets\demo\chart-bar-demo.js" />
     <None Include="wwwroot\assets\demo\chart-pie-demo.js" />
@@ -35,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Entidades\" />
     <Folder Include="Views\Historial\" />
     <Folder Include="Views\Ordenes\" />
   </ItemGroup>

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SistemaOrdenes.BD;
 using SistemaOrdenes.Models;
 using System.Diagnostics;
 using System.Net;
