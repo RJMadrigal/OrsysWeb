@@ -19,7 +19,7 @@ namespace SistemaOrdenes.Services
         //RETORNA LA LISTA DE USUARIOS JEFES
         public IEnumerable<TbUsuario> ObtenerJefes()
         {
-            return context.TbUsuarios.Where(u => u.IdRol == 2).ToList();
+            return context.TbUsuarios.Where(u => u.IdRolNavigation.NombreRol == "Jefe").ToList();
         }
         public IEnumerable<TbRole> ObtenerRoles()
         {
