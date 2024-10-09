@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\css\estilo.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\estiloLogin.css" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,7 +37,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Historial\" />
-    <Folder Include="Views\Ordenes\" />
   </ItemGroup>
 
 </Project>

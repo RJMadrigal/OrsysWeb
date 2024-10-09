@@ -68,6 +68,10 @@ namespace SistemaOrdenes.Controllers
             //SE GENERA UN TOKEN
             usuarios.Token = GenerateToken.Generate();
 
+            //EL ESTADO DEL USUARIO SERA INACTIVO
+            usuarios.Estado = true;
+
+
             if (!ModelState.IsValid)
             {
                 return View(usuarios);
@@ -240,7 +244,10 @@ namespace SistemaOrdenes.Controllers
 
         public async Task<ActionResult> Confirmar(string token)
         {
+            //SE OBTIENE EL USUARIO MEDIANTE EL TOKEM
             var usuario = await _usuarioService.ConfirmarAsync(token);
+
+
 
             if (usuario != null && usuario.Confirmado == false)
             {

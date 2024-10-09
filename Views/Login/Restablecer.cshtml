@@ -1,0 +1,28 @@
+﻿
+@model RestablecerViewModel
+
+@{
+    ViewData["Title"] = "Olvidaste tu contraseña?";
+}
+
+<div class="login-container">
+    <div class="login-box">
+        <form asp-action="Restablecer" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="input-box">
+                <label asp-for="Correo">Correo electrónico</label>
+                <input asp-for="Correo" type="text" id="usuario" placeholder="Correo electrónico" required>
+            </div>
+
+            <a asp-action="Login" class="forgot-password">Cancelar</a>
+            <button asp-action="Restablecer" type="submit">Restablecer</button>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+

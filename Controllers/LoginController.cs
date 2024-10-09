@@ -56,24 +56,28 @@ namespace SistemaOrdenes.Controllers
                 
         }
 
+        public IActionResult Restablecer()
+        {
+            return View();
+        }
 
 
 
         [HttpPost]
-        public async Task<ActionResult> Restablecer(string correo /*[FromServices] IWebHostEnvironment env*/)
+        public async Task<ActionResult> Restablecer(RestablecerViewModel modelo /*[FromServices] IWebHostEnvironment env*/)
         {
 
             //SE OBTIENE EL USUARIO MEDIANTE EL CORREO
-            var usuario = await _usuarioData.Obtener(correo);
+            var usuario = await _usuarioData.Obtener(modelo.Correo);
 
-            ViewBag.Correo = correo;
+            ViewBag.Correo = modelo.Correo;
             if (usuario != null)
             {
                 bool respuesta = await usuarioService.RestablecerActualizarAsync(true, usuario.Clave, usuario.Token);
                 if (respuesta)
                 {
                     Debug.WriteLine("Correo: " + usuario.Correo);
-                    bool enviado = await emailService.SendResetPasswordEmail(correo, usuario.Nombre, usuario.Token);
+                    bool enviado = await emailService.SendResetPasswordEmail(modelo.Correo, usuario.Nombre, usuario.Token);
                     if (enviado)
                     {
                         ViewBag.Restablecido = true;
