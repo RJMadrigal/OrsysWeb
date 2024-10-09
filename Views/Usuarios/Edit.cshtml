@@ -5,66 +5,166 @@
 }
 
 
+<style>
+    .container {
+        background-color: #2a2a2a;
+        padding: 20px;
+        border-radius: 10px;
+        width: 800px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    }
 
-<h4>Actualizar datos de usuario.</h4>
+    h2 {
+        color: #fff;
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+
+    .form-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        width: 30%;
+    }
+
+    label {
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+
+    input, select {
+        padding: 10px;
+        background-color: #444;
+        border: none;
+        color: white;
+        border-radius: 5px;
+    }
+
+
+    .actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .actions button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        margin: 0 10px;
+    }
+
+    .cancel {
+        background-color: grey;
+        color: white;
+        transition: background-color 0.3s;
+    }
+
+    .create {
+        background-color: grey;
+        color: white;
+        transition: background-color 0.3s;
+    }
+
+    .cancel:hover {
+        background-color: lightslategrey;
+    }
+
+    .create:hover {
+        background-color: lightslategrey;
+    }
+
+
+    select option {
+        background-color: #444;
+        color: white;
+    }
+
+    .icono {
+        margin-right: 5px;
+        font-size: 16px;
+    }
+
+    .form-row img {
+        margin-left: 10px;
+        width: 20px;
+    }
+
+    .role-selector {
+        margin: 10px;
+        width: 50%;
+    }
+    
+</style>
+
+
+<h2>Editar usuario</h2>
+
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <input type="hidden" asp-for="IdUsuario" />
+<div class="container">
+
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
 
+        <div class="form-row">
             <div class="form-group">
-                <label asp-for="Nombre" class="control-label">Nombre completo</label>
-                <input asp-for="Nombre" class="form-control" />
+                <label for="name">Nombre Completo</label>
+                <input asp-for="Nombre" type="text" id="name" placeholder="Ingresa tu nombre completo">
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Usuario" class="control-label"></label>
-                <input asp-for="Usuario" class="form-control" />
+                <label for="idUsuario">Nombre de usuario</label>
+                <input asp-for="Usuario" type="text" id="idUsuario" placeholder="Ingresa el nombre de usuario">
                 <span asp-validation-for="Usuario" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Correo" class="control-label"></label>
-                <input asp-for="Correo" class="form-control" />
+                <label for="email">Email</label>
+                <input asp-for="Correo" type="email" id="email" placeholder="Correo Electrónico">
                 <span asp-validation-for="Correo" class="text-danger"></span>
             </div>
-            
-            <div class="form-group">
-                <label asp-for="Restablecer" class="control-label"></label>
-                <input asp-for="Restablecer" class="form-control" />
-                <span asp-validation-for="Restablecer" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Confirmado" class="control-label"></label>
-                <input asp-for="Confirmado" class="form-control" />
-                <span asp-validation-for="Confirmado" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                <label asp-for="IdRol" class="control-label">Rol del usuario</label>
-                <select asp-for="IdRol" class="form-control" asp-items="ViewBag.Roles"></select>
-                <span asp-validation-for="IdRol" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdJefe" class="control-label">Jefe a cargo</label>
-                <select asp-for="IdJefe" class="form-control" asp-items="ViewBag.Jefes"></select>
-                <span asp-validation-for="IdJefe" class="text-danger"></span>
+        </div>
+        <div class="form-row">
+            <div class="form-group role-selector">
+                <label for="roles">Asignar Rol</label>
+                <select asp-for="IdRol" id="roles" asp-items="ViewBag.Roles"></select>
             </div>
 
-
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="form-group role-selector">
+                <label for="roles">Asignar Jefe</label>
+                <select asp-for="IdJefe" id="roles" asp-items="ViewBag.Jefes"></select>
             </div>
-        </form>
-    </div>
+        </div>
+
+
+        <div class="form-row">
+            <div class="form-group role-selector">
+                <label for="roles">Estado</label>
+                <select id="roles">
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="actions">
+            <a asp-action="Index" type="button" class="cancel">Cancelar</a>
+            <button asp-action="Create" type="submit" class="create">Editar</button>
+            
+        </div>
+    </form>
 </div>
 
-<div>
-    <a asp-action="Index">Volver al panel de usuarios</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
