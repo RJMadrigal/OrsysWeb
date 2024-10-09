@@ -23,16 +23,20 @@
         <aside class="sidebar">
             <div class="menu">
 
+
+
                 <!--VISTAS DE ADMIN-->
-
-
                 <div class="menu-item">
                     <i class="fas fa-file-alt"></i>
                     <a style="color: #ffff; text-decoration: none" asp-action="Index" asp-controller="Usuarios">Usuarios</a>
                     <i class="fas fa-chevron-right"></i>
                 </div>
 
-                <!--VISTAS DE EMPLEADO-->
+                <hr />
+                <br />
+
+
+                <!--VISTAS DE EMPLEADO NORMAL-->
                 <div class="menu-item">
                     <i class="fas fa-file-alt"></i>
                     <a style="color: #ffff; text-decoration: none" asp-action="Crear" asp-controller="OrdenesEmpleado">Crear orden</a>
@@ -54,15 +58,22 @@
                 </div>
 
 
-
+                <hr />
+                <br />
 
 
 
                 <!--VISTAS DE JEFE DE USUARIO & JEFE APROBADOR-->
-
-
-
-
+                <div class="menu-item">
+                    <i class="fas fa-clipboard-list"></i>
+                    <a style="color: #ffff; text-decoration: none" asp-action="Index" asp-controller="OrdenesJefes">Ordenes</a>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-chart-pie"></i>
+                    <a style="color: #ffff; text-decoration: none" asp-action="Reportes" asp-controller="OrdenesJefes">Reportes</a>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
 
 
             </div>

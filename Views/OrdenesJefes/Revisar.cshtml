@@ -1,0 +1,143 @@
+﻿
+@{
+    ViewData["Tittle"] = "Revisar orden";
+}
+
+<h1>Revisar</h1>
+
+<style>
+
+    .containerEstado {
+        background-color: #2a2a2a;
+        padding: 20px;
+        border-radius: 10px;
+        width: 800px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    table.table-dark {
+        background-color: #333;
+        border-radius: 10px; /* Redondear los bordes de la tabla */
+        overflow: hidden; /* Asegura que el contenido no se salga de los bordes redondeados */
+    }
+
+
+        table.table-dark th,
+        table.table-dark td {
+            border: none; /* Elimina los bordes de las celdas para que no afecten el borde redondeado */
+        }
+
+    .btn-nuevo {
+        background-color: grey; /* Color de fondo del botón */
+        color: white; /* Color del texto */
+        border: none; /* Sin borde */
+        border-radius: 5px; /* Bordes redondeados */
+        padding: 10px 20px; /* Espaciado interno */
+        transition: background-color 0.3s; /* Transición suave para el color de fondo */
+    }
+
+
+    .form-row img {
+        margin-left: 10px;
+        width: 20px;
+    }
+
+    .form-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        width: 30%;
+    }
+
+    input, select, textarea {
+        padding: 10px;
+        background-color: #444;
+        border: none;
+        color: white;
+        border-radius: 5px;
+    }
+
+
+    .actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .actions button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        margin: 0 10px;
+    }
+
+    select option {
+        background-color: #444;
+        color: white;
+    }
+
+</style>
+
+
+
+
+<div class="container">
+    <h1>Orden #111</h1>
+
+    <hr />
+
+
+    <table class="table table-dark table-hover">
+        <thead>
+            <tr>
+                <th>#Orden</th>
+                <th>Nombre</th>
+                <th>Modelo</th>
+                <th>Cantidad</th>
+                <th>Monto</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>1</td>
+                <td>Lenovo</td>
+                <td>Ideapad</td>
+                <td>1</td>
+                <td>20.000</td>
+            </tr>
+        </tbody>
+    </table>
+
+    
+ 
+</div>
+
+
+<div class="containerEstado">
+    <div class="form-row">
+        <div class="form-group">
+            <label for="name">Estado</label>
+            <select>
+                <option>Aprobar</option>
+                <option>Rechazar</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="idUsuario">Comentarios del solicitante</label>
+            <textarea></textarea>
+            <span class="text-danger"></span>
+        </div>
+    </div>
+</div>
+
+
+
