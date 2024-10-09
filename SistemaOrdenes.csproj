@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\css\estilo.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\assets\demo\chart-area-demo.js" />
     <None Include="wwwroot\assets\demo\chart-bar-demo.js" />
     <None Include="wwwroot\assets\demo\chart-pie-demo.js" />

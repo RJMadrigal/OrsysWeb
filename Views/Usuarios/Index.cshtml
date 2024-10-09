@@ -5,50 +5,123 @@
 }
 
 
-<div class="card mb-4">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <div>
-            <i class="fas fa-table me-1"></i>
-            Listado de usuarios del sistema.
-         </div>
-        <div>
-            <a class="btn btn-primary" asp-action="Create">Registrar un nuevo usuario.</a>
-        </div>
+<style>
+    table.table-dark {
+        background-color: #333;
+        border-radius: 10px; /* Redondear los bordes de la tabla */
+        overflow: hidden; /* Asegura que el contenido no se salga de los bordes redondeados */
+    }
+
+
+    table.table-dark th,
+    table.table-dark td {
+        border: none; /* Elimina los bordes de las celdas para que no afecten el borde redondeado */
+    }
+
+    .btn-nuevo {
+        background-color: grey; /* Color de fondo del botón */
+        color: white; /* Color del texto */
+        border: none; /* Sin borde */
+        border-radius: 5px; /* Bordes redondeados */
+        padding: 10px 20px; /* Espaciado interno */
+        transition: background-color 0.3s; /* Transición suave para el color de fondo */
+    }
+
+    .btn-nuevo:hover {
+        background-color: lightslategrey; /* Cambia el color a un gris más claro (o el color que desees) */
+    }
+
+    .icono-accionEliminar {
+        color: red; /* Cambia el color de los íconos */
+        transition: color 0.3s; /* Transición suave para el color */
+    }
+
+    .icono-accionEditar{
+        color: lightgreen;
+        transition: color 0.3s; /* Transición suave para el color */
+    }
+
+    .icono-accionEditar:hover {
+        color: forestgreen; /* Cambia el color al pasar el mouse (puedes personalizarlo) */
+    }
+
+    .icono-accionEliminar:hover {
+        color: darkred; /* Cambia el color al pasar el mouse (puedes personalizarlo) */
+    }
+
+
+
+
+
+    .search-input::placeholder {
+        color: #bbb; /* Cambia el color del texto del placeholder */
+    }
+
+
+    .search-input {
+        background-color: #444; /* Cambia el color de fondo de la barra de búsqueda */
+        color: white; /* Cambia el color del texto */
+        border: 1px solid #666; /* Cambia el color del borde */
+        border-radius: 5px; /* Redondear bordes de la barra de búsqueda */
+    }
+
+
+    .search-input:focus {
+        background-color: #555; /* Color de fondo cuando está en foco */
+        border-color: #888; /* Cambiar el color del borde cuando está en foco */
+        outline: none; /* Quitar el borde azul predeterminado */
+        color: white;
+    }
+
+</style>
+
+
+
+
+<div class="container">
+    <h1>Usuarios</h1>
+
+    <div class="d-flex justify-content-between mb-3">
+        <input type="text"  class="form-control search-input" placeholder="Buscar" style="width: 300px;">
+        <button class="btn-nuevo">+ Nuevo</button>
     </div>
-    <div>
- 
-    </div>
-    <div class="card-body">
-        <table id="datatablesSimple" class="table table-striped table-bordered">
-            <thead class="thead-dark">
+    <hr />
+
+    <table class="table table-dark table-hover">
+        <thead>
+            <tr>
+                <th>Codigo</th>
+                <th>Nombre Completo</th>
+                <th>Usuario</th>
+                <th>Acción</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var usuario in Model)
+            {
                 <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Usuario</th>
-                    <th scope="col">Correo</th>
-                    <th scope="col">Jefe</th>
-                    <th scope="col">Rol</th>
-                    <th scope="col">Acciones</th>
+                    <td>@usuario.IdUsuario</td>
+                    <td>@usuario.Nombre</td>
+                    <td>@usuario.Usuario</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@usuario.IdUsuario"><i class="fas fa-edit icono-accionEditar"></i></a>
+                        <a asp-action="Delete" asp-route-id="@usuario.IdUsuario"><i class="fas fa-trash-alt icono-accionEliminar"></i></a>
+                    </td>
+                    <td>
+                        @if (usuario.Estado.Equals("Activo"))
+                        {
+                            <span class="text-success">Activo</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Inactivo</span>
+                        }
+                    </td>
                 </tr>
-            </thead>
-            
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Usuario)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Correo)</td>
-                        <td>@Html.DisplayFor(modelItem => item.IdJefeNavigation.Nombre)</td>
-                        <td>@Html.DisplayFor(modelItem => item.IdRolNavigation.NombreRol)</td>
-                        <td>
-                            <a class="btn btn-sm btn-info" asp-action="Edit" asp-route-id="@item.IdUsuario">Editar</a>
-                            <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.IdUsuario">Eliminar</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+            }
+        </tbody>
+    </table>
 </div>
 
 

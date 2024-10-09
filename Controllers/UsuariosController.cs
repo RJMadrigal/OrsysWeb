@@ -34,7 +34,8 @@ namespace SistemaOrdenes.Controllers
             _usuarioService = usuarioService;
         }
 
-        // GET: Usuarios
+
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var dbPruebaOrdenesContext = _context.TbUsuarios.Include(u => u.IdJefeNavigation).Include(u => u.IdRolNavigation);
