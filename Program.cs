@@ -17,7 +17,9 @@ builder.Services.AddDbContext<DbProyectoAnalisisIiContext>(options =>
 
 builder.Services.AddTransient<IRepositorioUsuarios, RepositorioUsuarios>();
 
-// Add services to the container.
+
+
+//CONFIGURACION DE COOKIES Y SERVICIOS
 builder.Services.AddControllersWithViews();
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -27,6 +29,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LogoutPath = "/Login/Logout";
         options.AccessDeniedPath = "/Home/AccessDenied";
     });
+builder.Services.AddAuthorization();
+builder.Services.AddControllersWithViews();
+
+
+
+
 builder.Services.AddScoped<IEmailService,EmailService>(); 
 builder.Services.AddScoped<UsuarioService>();
 builder.Services.AddHttpContextAccessor();

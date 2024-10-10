@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -33,6 +34,7 @@ namespace SistemaOrdenes.Controllers
             _emailService = emailService;
             _usuarioService = usuarioService;
         }
+
 
 
         [HttpGet]
@@ -198,7 +200,6 @@ namespace SistemaOrdenes.Controllers
 
 
 
-        // POST: Usuarios/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -311,7 +312,10 @@ namespace SistemaOrdenes.Controllers
                 return View();
             }
         }
-        //no restringir
+
+
+
+
         [HttpPost]
         public async Task<ActionResult> ActualizarContraseña(string token, string clave, string confirmarClave)
         {
