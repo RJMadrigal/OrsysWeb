@@ -146,8 +146,11 @@
 
         </div>
         <div class="actions">
-            <a asp-action="Index" type="button" class="cancel">Cancelar</a>
+
             <button asp-action="Create" type="submit" class="create">Crear</button>
+            <a asp-action="Index">
+                <button type="button" class="cancel">Cancelar</button>
+            </a>
         </div>
     </form>
 </div>

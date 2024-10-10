@@ -26,84 +26,113 @@
 
                 
                 <!--VISTAS DE ADMIN-->
-                <div class="menu-item">
-                    <i class="fas fa-file-alt"></i>
-                    <a style="color: #ffff; text-decoration: none" asp-action="Index" asp-controller="Usuarios">Usuarios</a>
-                    <i class="fas fa-chevron-right"></i>
-                </div>
+                <a asp-action="Index" asp-controller="Usuarios" style="text-decoration: none">
+                    <div class="menu-item">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Usuarios</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+
+
                 <hr />
                 <br />
 
                
 
                 <!--VISTAS DE EMPLEADO NORMAL-->
-                <div class="menu-item">
-                    <i class="fas fa-file-alt"></i>
-                    <a style="color: #ffff; text-decoration: none" asp-action="Crear" asp-controller="OrdenesEmpleado">Crear orden</a>
-                    <i class="fas fa-chevron-right"></i>
-                </div>
+                <a asp-action="Crear" asp-controller="OrdenesEmpleado" style="text-decoration: none">
+                    <div class="menu-item">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Crear orden</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
 
-                <div class="menu-item">
-                    <i class="fas fa-clipboard-list"></i>
-                    <a style="color: #ffff; text-decoration: none" asp-action="Index" asp-controller="OrdenesEmpleado">Ordenes</a>
-                    <i class="fas fa-chevron-right"></i>
-                </div>
+                <a asp-action="Index" asp-controller="OrdenesEmpleado" style="text-decoration: none">
+                    <div class="menu-item">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Ordenes</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
 
-                <div class="menu-item">
-                    <i class="fas fa-chart-pie"></i>
-                    <a style="color: #ffff; text-decoration: none" asp-action="Reportes" asp-controller="OrdenesEmpleado">Reportes</a>
-                    <i class="fas fa-chevron-right"></i>
-                </div>
+
+
+                <a asp-action="Reportes" asp-controller="OrdenesEmpleado" style="text-decoration: none">
+                    <div class="menu-item">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Reportes</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
 
                 <br />
+
+
                 
                 <!--VISTAS DE JEFE DE USUARIO & JEFE APROBADOR-->
                  
-                <div class="menu-item">
-                    <i class="fas fa-clipboard-list"></i>
-                    <a style="color: #ffff; text-decoration: none" asp-action="Index" asp-controller="OrdenesJefes">Ordenes</a>
-                    <i class="fas fa-chevron-right"></i>
-                </div>
+                <a asp-action="Index" asp-controller="OrdenesJefes" style="text-decoration: none">
+                    <div class="menu-item">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Ordenes</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+
+                <a asp-action="Reportes" asp-controller="OrdenesJefes" style="text-decoration: none">
+                    <div class="menu-item">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Reportes</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
 
 
-                <div class="menu-item">
-                    <i class="fas fa-chart-pie"></i>
-                    <a style="color: #ffff; text-decoration: none" asp-action="Reportes" asp-controller="OrdenesJefes">Reportes</a>
-                    <i class="fas fa-chevron-right"></i>
-                </div>
-
-                
 
                 <br />
-                <!--VISTAS DE JEFE DE USUARIO & JEFE FINANCIERO-->
-                
-                <div class="menu-item">
-                    <i class="fas fa-clipboard-list"></i>
-                    <a style="color: #ffff; text-decoration: none" asp-action="Index" asp-controller="OrdenesJefes">Ordenes</a>
-                    <i class="fas fa-chevron-right"></i>
-                </div>
 
-                <div class="menu-item">
-                    <i class="fas fa-chart-pie"></i>
-                    <a style="color: #ffff; text-decoration: none" asp-action="Reportes" asp-controller="OrdenesJefes">Reportes</a>
-                    <i class="fas fa-chevron-right"></i>
-                </div>
+
+                <!--VISTAS DE JEFE DE USUARIO & JEFE FINANCIERO-->
+                <a asp-action="Index" asp-controller="OrdenesJefes" style="text-decoration: none">
+                    <div class="menu-item">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Ordenes</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+
+                <a asp-action="Reportes" asp-controller="OrdenesJefes" style="text-decoration: none">
+                    <div class="menu-item">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Reportes</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
 
 
 
 
             </div>
             <div class="menu-footer">
-                <div class="menu-item">
-                    <i class="fas fa-info-circle"></i>
-                    <span>Acerca de</span>
-                    <i class="fas fa-chevron-right"></i>
-                </div>
-                <div class="menu-item">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Salir</span>
-                    <i class="fas fa-chevron-right"></i>
-                </div>
+                <a asp-action="" asp-controller="" style="text-decoration: none">
+                    <div class="menu-item">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Acerca de</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+
+                <a asp-action="Login" asp-controller="Login" style="text-decoration: none">
+                    <div class="menu-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Salir</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+
+                </a>
+                
             </div>
         </aside>
 
