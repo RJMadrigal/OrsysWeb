@@ -1,0 +1,182 @@
+﻿
+@{
+    ViewData["Tittle"] = "Revisar orden";
+}
+
+
+<style>
+
+    .container {
+        background-color: #1A1A1A;
+        padding: 20px;
+        border-radius: 8px;
+        width: 550px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    h1 {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        color: #FFFFFF;
+    }
+
+    table th, table td {
+        text-align: left;
+        padding: 12px;
+    }
+
+    table th {
+        background-color: #333333;
+        font-weight: normal;
+        border-bottom: 1px solid #444444;
+    }
+
+    table td {
+        background-color: #1A1A1A;
+        border-bottom: 1px solid #333333;
+    }
+
+    table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .estado-select, .comentarios {
+        margin-bottom: 15px;
+    }
+
+    select {
+        width: 100%;
+        padding: 12px;
+        border-radius: 6px;
+        background-color: #333333;
+        color: #FFFFFF;
+        border: none;
+        outline: none;
+        font-size: 14px;
+    }
+
+    textarea {
+        width: 100%;
+        padding: 12px;
+        border-radius: 6px;
+        background-color: #333333;
+        color: #FFFFFF;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        resize: none;
+    }
+
+    .estado-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+    .estado-buttons a {
+        padding: 10px 20px;
+        text-decoration: none;
+        color: #007BFF;
+        background-color: transparent;
+        border: 1px solid #007BFF;
+        border-radius: 6px;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .estado-buttons a:hover {
+        background-color: #007BFF;
+        color: #FFFFFF;
+    }
+
+    .comentarios label {
+        font-size: 14px;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .update-btn {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .update-btn button {
+        padding: 12px 20px;
+        background-color: #333333;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .update-btn button:hover {
+        background-color: #444444;
+    }
+
+</style>
+
+
+<h1>Revisar</h1>
+<hr />
+
+<div class="container">
+    <h1>Orden 001</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Artículo</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Cantidad</th>
+                <th>Monto</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Artículo 2</td>
+                <td>Marca 2</td>
+                <td>Modelo 2</td>
+                <td>1</td>
+                <td>€12.687</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="estado-select">
+        <label for="estado">Estado</label>
+        <select id="estado">
+            <option value="">Elija Una Opción</option>
+            <option value="aprobar">Aprobar</option>
+            <option value="denegar">Denegar</option>
+        </select>
+    </div>
+
+    <div class="estado-buttons">
+        <a href="#">Aprobar</a>
+        <a href="#">Denegar</a>
+    </div>
+
+    <div class="comentarios">
+        <label for="comentarios">Comentarios del Solicitante</label>
+        <textarea id="comentarios" rows="3">Factura se para en 3 tractos quincenales iniciando el 07/24</textarea>
+    </div>
+
+    <div class="comentarios">
+        <label for="comentarios">Agregar comentario</label>
+        <textarea id="comentarios" rows="3" placeholder="Agrega algún comentario adicional"></textarea>
+    </div>
+
+    <div class="update-btn">
+        <button>Actualizar</button>
+    </div>
+</div>
+
+
+

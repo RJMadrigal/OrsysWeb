@@ -1,8 +1,9 @@
-﻿namespace SistemaOrdenes.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SistemaOrdenes.Models
 {
     public class EditarUsuarioViewModel
     {
-
         public int IdUsuario { get; set; } 
 
         public string Nombre { get; set; }

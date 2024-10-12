@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -34,7 +35,9 @@ namespace SistemaOrdenes.Controllers
             _usuarioService = usuarioService;
         }
 
-        // GET: Usuarios
+
+
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var dbPruebaOrdenesContext = _context.TbUsuarios.Include(u => u.IdJefeNavigation).Include(u => u.IdRolNavigation);
@@ -66,6 +69,10 @@ namespace SistemaOrdenes.Controllers
 
             //SE GENERA UN TOKEN
             usuarios.Token = GenerateToken.Generate();
+
+            //EL ESTADO DEL USUARIO SERA INACTIVO
+            usuarios.Estado = true;
+
 
             if (!ModelState.IsValid)
             {
@@ -193,7 +200,6 @@ namespace SistemaOrdenes.Controllers
 
 
 
-        // POST: Usuarios/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -239,7 +245,10 @@ namespace SistemaOrdenes.Controllers
 
         public async Task<ActionResult> Confirmar(string token)
         {
+            //SE OBTIENE EL USUARIO MEDIANTE EL TOKEM
             var usuario = await _usuarioService.ConfirmarAsync(token);
+
+
 
             if (usuario != null && usuario.Confirmado == false)
             {
@@ -303,7 +312,10 @@ namespace SistemaOrdenes.Controllers
                 return View();
             }
         }
-        //no restringir
+
+
+
+
         [HttpPost]
         public async Task<ActionResult> ActualizarContraseña(string token, string clave, string confirmarClave)
         {

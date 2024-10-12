@@ -1,0 +1,109 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1b1b1b; /* Color de fondo negro */
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-box {
+    background-color: #2e2e2e; /* Fondo gris oscuro */
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    width: 320px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-box {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+label {
+    color: #ccc; /* Color de texto gris claro */
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 10px 40px 10px 10px;
+    background-color: #1c1c1c; /* Color del campo de texto */
+    border: none;
+    border-radius: 5px;
+    color: #ccc; /* Color del texto en los inputs */
+    font-size: 1rem;
+}
+
+    input::placeholder {
+        color: #555; /* Color del placeholder */
+    }
+
+.icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa; /* Color de los íconos */
+    font-size: 1.2rem;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #aaa;
+}
+
+.forgot-password {
+    color: #3498db; /* Azul para el enlace de '¿Olvidaste tu Contraseña?' */
+    text-decoration: none;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4b4b4b; /* Fondo gris del botón */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+    button:hover {
+        background-color: #5a5a5a; /* Cambio de color en hover */
+    }
+
+/* Ajuste para dispositivos móviles */
+@media (max-width: 480px) {
+    .login-box {
+        width: 100%;
+        padding: 20px;
+    }
+}

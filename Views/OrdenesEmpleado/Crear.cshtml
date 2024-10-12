@@ -1,11 +1,8 @@
-﻿@model TbUsuario
-
+﻿
 @{
-    ViewData["Title"] = "Create";
-    Layout = "_Layout";
+
+    ViewData["tittle"] = "Crear orden";
 }
-
-
 
 <style>
 
@@ -55,14 +52,14 @@
         margin-top: 20px;
     }
 
-    .actions button {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        margin: 0 10px;
-    }
+        .actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
 
     .cancel {
         background-color: grey;
@@ -76,7 +73,7 @@
         transition: background-color 0.3s;
     }
 
-    .cancel:hover{
+    .cancel:hover {
         background-color: lightslategrey;
     }
 
@@ -106,59 +103,50 @@
     }
 </style>
 
-<h2>Usuario Nuevo</h2>
+<h1>Crear orden</h1>
 
 <hr />
 
 <div class="container">
-    
-    <form asp-action="Create">
+
+    <form>
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
 
         <div class="form-row">
             <div class="form-group">
-                <label for="name">Nombre Completo</label>
-                <input asp-for="Nombre" type="text" id="name" placeholder="Ingresa tu nombre completo">
-                <span asp-validation-for="Nombre" class="text-danger"></span>
+                <label for="name">Nombre del artículo</label>
+                <input  type="text"  placeholder="Nombre del Artículo">
+                <span  class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label for="idUsuario">Nombre de usuario</label>
-                <input asp-for="Usuario" type="text" id="idUsuario" placeholder="Ingresa el nombre de usuario">
-                <span asp-validation-for="Usuario" class="text-danger"></span>
+                <label for="idUsuario">Modelo</label>
+                <input  type="text"  placeholder="Ingresa el Monto">
+                <span class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label for="email">Email</label>
-                <input asp-for="Correo" type="email" id="email" placeholder="Correo Electrónico">
-                <span asp-validation-for="Correo" class="text-danger"></span>
+                <label>Monto en colones</label>
+                <input type="number" placeholder="Ingresa el Monto en colones">
+                <span class="text-danger"></span>
             </div>
+            
         </div>
+
         <div class="form-row">
-            <div class="form-group role-selector">
-                <label for="roles">Asignar Rol</label>
-                <select asp-for="IdRol" id="roles" asp-items="ViewBag.Roles"></select>
-            </div>
-
-            <div class="form-group role-selector">
-                <label for="roles">Asignar Jefe</label>
-                <select asp-for="IdJefe" id="roles" asp-items="ViewBag.Jefes"></select>
+            <div class="form-group">
+                <label>Ingresa la cantidad</label>
+                <input type="number" placeholder="Ingresa la cantidad">
+                <span class="text-danger"></span>
             </div>
 
         </div>
-        <div class="actions">
+        
 
-            <button asp-action="Create" type="submit" class="create">Crear</button>
-            <a asp-action="Index">
-                <button type="button" class="cancel">Cancelar</button>
-            </a>
+
+        <div class="actions">
+            <button asp-action="Index" asp-controller="Usuarios" type="button" class="cancel">Cancelar</button>
+            <button  type="submit" class="create"><i class="fa fa-plus-square"></i> Enviar</button>
         </div>
     </form>
 </div>
-
-
-
-
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
