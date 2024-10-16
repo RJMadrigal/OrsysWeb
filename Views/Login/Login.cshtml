@@ -14,19 +14,19 @@
 
 <div class="login-container">
     <div class="login-box">
-        <form >
+        <form asp-action="Login">
             <div class="input-box">
-                <label for="usuario">Usuario</label>
-                <input type="text" id="usuario" placeholder="Usuario" required>
+                <label asp-for="Correo" for="usuario">Usuario</label>
+                <input asp-for="Correo" type="text" id="usuario" placeholder="Usuario" required>
             </div>
 
             <div class="input-box">
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" placeholder="Contraseña" required>
+                <label asp-for="Clave" for="password">Contraseña</label>
+                <input asp-for="Clave" type="password" id="password" placeholder="Contraseña" required>
             </div>
 
             <a asp-action="Restablecer" class="forgot-password">¿Olvidaste tu Contraseña?</a>
-            <button asp-action="Index" asp-controller="Usuarios" type="submit">Ingresar</button>
+            <button type="submit">Ingresar</button>
         </form>
     </div>
 </div>

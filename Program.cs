@@ -19,17 +19,15 @@ builder.Services.AddTransient<IRepositorioUsuarios, RepositorioUsuarios>();
 
 
 
-//CONFIGURACION DE COOKIES Y SERVICIOS
-builder.Services.AddControllersWithViews();
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+
+//CONFIGURACION DE COOKIES Y SERVICIOS
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.LoginPath = "/Login/Login";
         options.LogoutPath = "/Login/Logout";
-        options.AccessDeniedPath = "/Home/AccessDenied";
     });
-builder.Services.AddAuthorization();
 builder.Services.AddControllersWithViews();
 
 
