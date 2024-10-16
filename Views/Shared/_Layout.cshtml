@@ -124,14 +124,17 @@
                     </div>
                 </a>
 
-                <a asp-action="Login" asp-controller="Login" style="text-decoration: none">
-                    <div class="menu-item">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Salir</span>
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
-
-                </a>
+                
+               <form asp-action="Logout" asp-controller="Login" method="post">
+                   <div class="menu-item">
+                        <button type="submit" style="background: none; border: none; color: white; text-decoration: none; cursor: pointer; padding: 0; display: flex;  align-items: center;">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span style="margin: 0 5px;">Salir</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                   </div>
+               </form>
+                
                 
             </div>
         </aside>

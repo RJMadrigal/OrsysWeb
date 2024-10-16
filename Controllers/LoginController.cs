@@ -9,6 +9,7 @@ using SistemaOrdenes.Models;
 using static SistemaOrdenes.Services.EmailService;
 using System.Diagnostics;
 using SistemaOrdenes.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace SistemaOrdenes.Controllers
@@ -93,6 +94,12 @@ namespace SistemaOrdenes.Controllers
                 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Login", "Login");
+        }
 
 
         //VISTA RESTABLECER USUARIO
