@@ -9,6 +9,7 @@ namespace SistemaOrdenes.Services
     {
         Task EditarUser(EditarUsuarioViewModel usuarios);
         Task<TbUsuario> Obtener(string correo);
+        Task<string> ObtenerRolPorId(int id);
         Task<TbUsuario> ObtenerUsuarioPorCredenciales(string correo, string clave);
     }
 
@@ -60,6 +61,27 @@ namespace SistemaOrdenes.Services
             //SE GUARDA LOS CAMBIOS
             await context.SaveChangesAsync();
         }
+
+
+        //SE OBTIENE EL ROL DEL USUARIO POR ID
+
+        public async Task<string> ObtenerRolPorId(int id)
+        {
+            //SE OBTIENE EL USUARIO INCLUYENDO SU ROL
+            var usuario = await context.TbUsuarios
+                .Include(u => u.IdRolNavigation) //Carga la navegación hacia el rol
+                .FirstOrDefaultAsync(u => u.IdUsuario == id);
+
+            //RETORNA EL NOMBRE DEL ROL O UN MENSAJE DE ERROR
+            if (usuario != null && usuario.IdRolNavigation != null)
+            {
+                return usuario.IdRolNavigation.NombreRol; // Retorna el nombre del rol
+            }
+
+            return "Rol no encontrado"; // Manejo si no se encuentra el rol
+        }
+
+
 
 
 

@@ -36,7 +36,7 @@ namespace SistemaOrdenes.Controllers
         }
 
 
-
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -46,6 +46,7 @@ namespace SistemaOrdenes.Controllers
 
 
         //GET AL ENTRAR AL FORM PARA CREAR UN USUARIO
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Create()
         {
@@ -56,6 +57,7 @@ namespace SistemaOrdenes.Controllers
 
 
         //POST PARA CREAR EL USUARIO
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TbUsuario usuarios)
@@ -96,6 +98,7 @@ namespace SistemaOrdenes.Controllers
 
 
         //GET AL INGRESAR A EDITAR EL USUARIO
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -135,6 +138,7 @@ namespace SistemaOrdenes.Controllers
 
         //POST PARA EDITAR EL USUARIO
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Edit(EditarUsuarioViewModel modelo) //[Bind("IdUsuario,Nombre,Usuario,Correo,Restablecer,Confirmado,IdRol,IdJefe")] )
         {
@@ -173,6 +177,7 @@ namespace SistemaOrdenes.Controllers
 
         //GET AL SELECCIONAR EL BOTON DE ELIMINAR USUARIO, EL CUAL CARGA LOS DATOS DEL USUARIO A ELIMINAR
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             //SE VALIDA EL ID
@@ -202,6 +207,7 @@ namespace SistemaOrdenes.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             //SE OBTIENE EL USUARIO A ELIMINAR MEDIANTE EL ID

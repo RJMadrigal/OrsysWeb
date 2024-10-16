@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -26,92 +28,90 @@
 
                 
                 <!--VISTAS DE ADMIN-->
-                <a asp-action="Index" asp-controller="Usuarios" style="text-decoration: none">
-                    <div class="menu-item">
-                        <i class="fas fa-file-alt"></i>
-                        <span>Usuarios</span>
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
-                </a>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Index" asp-controller="Usuarios" style="text-decoration: none">
+                        <div class="menu-item">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Usuarios</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </a>
+                }
+                
 
-
-                <hr />
-                <br />
-
-               
 
                 <!--VISTAS DE EMPLEADO NORMAL-->
-                <a asp-action="Crear" asp-controller="OrdenesEmpleado" style="text-decoration: none">
-                    <div class="menu-item">
-                        <i class="fas fa-file-alt"></i>
-                        <span>Crear orden</span>
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
-                </a>
+                @if (User.IsInRole("Empleado"))
+                {
+                    <a asp-action="Crear" asp-controller="OrdenesEmpleado" style="text-decoration: none">
+                        <div class="menu-item">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Crear orden</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </a>
 
-                <a asp-action="Index" asp-controller="OrdenesEmpleado" style="text-decoration: none">
-                    <div class="menu-item">
-                        <i class="fas fa-clipboard-list"></i>
-                        <span>Ordenes</span>
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
-                </a>
+                    <a asp-action="Index" asp-controller="OrdenesEmpleado" style="text-decoration: none">
+                        <div class="menu-item">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Ordenes</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </a>
 
-
-
-                <a asp-action="Reportes" asp-controller="OrdenesEmpleado" style="text-decoration: none">
-                    <div class="menu-item">
-                        <i class="fas fa-chart-pie"></i>
-                        <span>Reportes</span>
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
-                </a>
-
-                <br />
-
-
+                    <a asp-action="Reportes" asp-controller="OrdenesEmpleado" style="text-decoration: none">
+                        <div class="menu-item">
+                            <i class="fas fa-chart-pie"></i>
+                            <span>Reportes</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </a>
+                }
                 
+
                 <!--VISTAS DE JEFE DE USUARIO & JEFE APROBADOR-->
-                 
-                <a asp-action="Index" asp-controller="OrdenesJefes" style="text-decoration: none">
-                    <div class="menu-item">
-                        <i class="fas fa-clipboard-list"></i>
-                        <span>Ordenes</span>
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
-                </a>
+                @if (User.IsInRole("Jefe"))
+                {
+                    <a asp-action="Index" asp-controller="OrdenesJefes" style="text-decoration: none">
+                        <div class="menu-item">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Ordenes</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </a>
 
-                <a asp-action="Reportes" asp-controller="OrdenesJefes" style="text-decoration: none">
-                    <div class="menu-item">
-                        <i class="fas fa-chart-pie"></i>
-                        <span>Reportes</span>
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
-                </a>
-
-
-
-                <br />
+                    <a asp-action="Reportes" asp-controller="OrdenesJefes" style="text-decoration: none">
+                        <div class="menu-item">
+                            <i class="fas fa-chart-pie"></i>
+                            <span>Reportes</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </a>
+                }
+                
 
 
                 <!--VISTAS DE JEFE DE USUARIO & JEFE FINANCIERO-->
-                <a asp-action="Index" asp-controller="OrdenesJefes" style="text-decoration: none">
-                    <div class="menu-item">
-                        <i class="fas fa-clipboard-list"></i>
-                        <span>Ordenes</span>
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
-                </a>
+                @if (User.IsInRole("Jefe aprobador 1") || User.IsInRole("Jefe aprobador 2") || User.IsInRole("Jefe aprobador 3"))
+                {
+                    <a asp-action="Index" asp-controller="OrdenesJefes" style="text-decoration: none">
+                        <div class="menu-item">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Ordenes</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </a>
 
-                <a asp-action="Reportes" asp-controller="OrdenesJefes" style="text-decoration: none">
-                    <div class="menu-item">
-                        <i class="fas fa-chart-pie"></i>
-                        <span>Reportes</span>
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
-                </a>
-
-
+                    <a asp-action="Reportes" asp-controller="OrdenesJefes" style="text-decoration: none">
+                        <div class="menu-item">
+                            <i class="fas fa-chart-pie"></i>
+                            <span>Reportes</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </a>
+                }
+                
 
 
             </div>

@@ -31,6 +31,11 @@ namespace SistemaOrdenes.Controllers
             return View(); 
         }
 
+
+
+
+
+        //INICIO DE SESION
         [HttpPost]
         public async Task<IActionResult> Login(UsuarioLoginViewModel modelo)
         {
@@ -46,6 +51,38 @@ namespace SistemaOrdenes.Controllers
             //SE VALIDA QUE NO SEA NULO
             if (usuario != null)
             {
+
+                //SE CONFIGURA LOS CLAIMS
+                var claims = new List<Claim>()
+                {
+                    new Claim(ClaimTypes.NameIdentifier, usuario.IdUsuario.ToString()),
+                    new Claim(ClaimTypes.Email, usuario.Correo)
+                };
+
+                //SE OBTIENE EL ROL DEL USUARIO
+                var rol = await _usuarioData.ObtenerRolPorId(usuario.IdUsuario); //SE OBTIENE EL ROL DEL USUARIO
+
+                //SE VERIFICA SI EL ROL ES NULL
+                if(rol != null)
+                {
+                    //SE AGREGA EL ROL AL CLAIM
+                    claims.Add(new Claim(ClaimTypes.Role, rol));
+                }
+
+
+                //COOKIES PARA AUTENTICACION
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var authProperties = new AuthenticationProperties()
+                {
+                    IsPersistent = false
+                };
+
+                //INICIA SESION
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, 
+                                                new ClaimsPrincipal(claimsIdentity), authProperties);
+
+
+                //REDIRIGE AL MENÚ PRINCIPAL
                 return  RedirectToAction("Index", "Home");
             }
             else  
@@ -56,6 +93,9 @@ namespace SistemaOrdenes.Controllers
                 
         }
 
+
+
+        //VISTA RESTABLECER USUARIO
         public IActionResult Restablecer()
         {
             return View();
