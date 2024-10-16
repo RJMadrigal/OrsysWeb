@@ -34,6 +34,7 @@ namespace SistemaOrdenes.Services
             {
                 usuario.Restablecer = false;
                 usuario.Confirmado = false;
+                usuario.Estado = false;
                 context.Add(usuario);
                 await context.SaveChangesAsync();
                 return true;
@@ -45,6 +46,9 @@ namespace SistemaOrdenes.Services
            
         }
 
+
+
+        //RESTABLECE LA CONTRASEÑA DEL USUARIO
         public async Task<bool> RestablecerActualizarAsync(bool restablecer, string clave, string token)
         {
             bool respuesta = false;
@@ -55,6 +59,7 @@ namespace SistemaOrdenes.Services
                 {
                     usuario.Restablecer = restablecer;
                     usuario.Clave = clave;
+                    usuario.Estado = true;
 
                     context.TbUsuarios.Update(usuario);
                     int filasAfectadas = await context.SaveChangesAsync();
@@ -108,6 +113,7 @@ namespace SistemaOrdenes.Services
                     }
                     usuario.Clave = clave;
                     usuario.Confirmado = true;
+                    usuario.Estado = true;
                     await context.SaveChangesAsync();
                     return true;
                 }       
