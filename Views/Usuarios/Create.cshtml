@@ -5,10 +5,7 @@
     Layout = "_Layout";
 }
 
-
-
 <style>
-
     .container {
         background-color: #2a2a2a;
         padding: 20px;
@@ -48,21 +45,20 @@
         border-radius: 5px;
     }
 
-
     .actions {
         display: flex;
         justify-content: center;
         margin-top: 20px;
     }
 
-    .actions button {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        margin: 0 10px;
-    }
+        .actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
 
     .cancel {
         background-color: grey;
@@ -76,7 +72,7 @@
         transition: background-color 0.3s;
     }
 
-    .cancel:hover{
+    .cancel:hover {
         background-color: lightslategrey;
     }
 
@@ -84,20 +80,9 @@
         background-color: lightslategrey;
     }
 
-
     select option {
         background-color: #444;
         color: white;
-    }
-
-    .icono {
-        margin-right: 5px;
-        font-size: 16px;
-    }
-
-    .form-row img {
-        margin-left: 10px;
-        width: 20px;
     }
 
     .role-selector {
@@ -111,10 +96,8 @@
 <hr />
 
 <div class="container">
-    
     <form asp-action="Create">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
 
         <div class="form-row">
             <div class="form-group">
@@ -136,17 +119,15 @@
         <div class="form-row">
             <div class="form-group role-selector">
                 <label for="roles">Asignar Rol</label>
-                <select asp-for="IdRol" id="roles" asp-items="ViewBag.Roles"></select>
+                <select asp-for="IdRol" id="roles" asp-items="ViewBag.Roles" onchange="toggleJefeSelect()"></select>
             </div>
 
             <div class="form-group role-selector">
-                <label for="roles">Asignar Jefe</label>
-                <select asp-for="IdJefe" id="roles" asp-items="ViewBag.Jefes"></select>
+                <label for="jefe">Asignar Jefe</label>
+                <select asp-for="IdJefe" id="jefe" asp-items="ViewBag.Jefes" disabled></select>
             </div>
-
         </div>
         <div class="actions">
-
             <button asp-action="Create" type="submit" class="create">Crear</button>
             <a asp-action="Index">
                 <button type="button" class="cancel">Cancelar</button>
@@ -155,10 +136,27 @@
     </form>
 </div>
 
-
-
-
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function toggleJefeSelect() {
+            const rolSelect = document.getElementById('roles');
+            const jefeSelect = document.getElementById('jefe');
+
+            // Cambia 'Empleado' por el valor real que representa ese rol en tu lista
+            if (rolSelect.value === 2) {
+                jefeSelect.disabled = false; // Habilita el select de jefe
+            } else {
+                jefeSelect.disabled = true; // Deshabilita el select de jefe
+                jefeSelect.selectedIndex = 0; // Resetea el select de jefe
+            }
+        }
+
+        // Ejecuta al cargar la página
+        document.addEventListener('DOMContentLoaded', function () {
+            toggleJefeSelect(); // Verifica el estado inicial al cargar
+        });
+    </script>
 }

@@ -4,7 +4,6 @@
     ViewData["Title"] = "Actualizar datos de usuario";
 }
 
-
 <style>
     .container {
         background-color: #2a2a2a;
@@ -29,7 +28,7 @@
     .form-group {
         display: flex;
         flex-direction: column;
-        width: 30%;
+        width: 30%; /* Mantiene el ancho uniforme para los selects */
     }
 
     label {
@@ -45,31 +44,32 @@
         border-radius: 5px;
     }
 
-
     .actions {
         display: flex;
         justify-content: center;
         margin-top: 20px;
     }
 
-    .actions button {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        margin: 0 10px;
-    }
+        .actions button,
+        .actions a {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 10px;
+            text-decoration: none; /* Elimina el subrayado del enlace */
+            display: inline-block; /* Asegura que el enlace se comporte como un bloque */
+            color: white; /* Color del texto */
+        }
 
     .cancel {
         background-color: grey;
-        color: white;
         transition: background-color 0.3s;
     }
 
     .create {
-        background-color: blue;
-        color: white;
+        background-color: grey;
         transition: background-color 0.3s;
     }
 
@@ -81,7 +81,6 @@
         background-color: darkblue;
     }
 
-
     select option {
         background-color: #444;
         color: white;
@@ -92,18 +91,11 @@
         font-size: 16px;
     }
 
-    .form-row img {
-        margin-left: 10px;
-        width: 20px;
-    }
-
     .role-selector {
         margin: 10px;
         width: 50%;
     }
-    
 </style>
-
 
 <h2>Editar usuario</h2>
 
@@ -113,7 +105,7 @@
 
     <form asp-action="Edit">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+        <input asp-for="IdUsuario" type="hidden" />
 
         <div class="form-row">
             <div class="form-group">
@@ -132,6 +124,7 @@
                 <span asp-validation-for="Correo" class="text-danger"></span>
             </div>
         </div>
+
         <div class="form-row">
             <div class="form-group role-selector">
                 <label for="roles">Asignar Rol</label>
@@ -144,28 +137,39 @@
             </div>
         </div>
 
-
         <div class="form-row">
             <div class="form-group role-selector">
-                <label for="roles">Estado</label>
-                <select id="roles">
-                    <option value="Activo">Activo</option>
-                    <option value="Inactivo">Inactivo</option>
+                <label for="Restablecer">Solicito restablecimiento</label>
+                <select asp-for="Restablecer" id="restablecer">
+                    <option value="true">Activo</option>
+                    <option value="false">Inactivo</option>
+                </select>
+            </div>
+            <div class="form-group role-selector">
+                <label for="Confirmado">Confirmo su email</label>
+                <select asp-for="Confirmado" id="confirmado">
+                    <option value="true">Confirmado</option>
+                    <option value="false">No confirmado</option>
+                </select>
+            </div>
+            <div class="form-group role-selector">
+                <label for="Estado">Estado</label>
+                <select asp-for="Estado" id="Estado">
+                    <option value="true">Activo</option>
+                    <option value="false">Inactivo</option>
                 </select>
             </div>
         </div>
 
-
         <div class="actions">
-            <button asp-action="Index" type="button" class="cancel">Cancelar</button>
-            <button asp-action="Create" type="submit" class="create">Editar</button>
-            
+            <a asp-controller="Usuarios" asp-action="Index" class="cancel">Cancelar</a>
+            <button asp-action="Edit" type="submit" class="create">Editar</button>
         </div>
     </form>
 </div>
 
-
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
