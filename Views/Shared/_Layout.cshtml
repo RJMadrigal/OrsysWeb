@@ -13,46 +13,68 @@
     <link href="~/css/styles.css" rel="stylesheet" />
     @await RenderSectionAsync("Estilos", required: false)
 </head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark">
+            <div class="container" style="background-color:white">               
 
-<body class="sb-nav-fixed">
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" asp-action="Index" asp-controller="Home">Orsys</a>
-        <!-- Sidebar Toggle-->
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-        <!-- Navbar Search-->
-        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-            <div class="input-group">
-                
             </div>
-        </form>
-        <!-- Navbar-->
-        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><hr class="dropdown-divider" /></li>
-                    <li><a class="dropdown-item" href="@Url.Action("Login","Login")">Cerrar sesión</a></li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
-    <div id="layoutSidenav">
-        <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                <div class="sb-sidenav-menu">
-                    <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Administrador</div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                            Control de usuarios
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" asp-action="Index" asp-controller="Usuarios">Panel de usuarios</a>
-                            </nav>
-                        </div>
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-page="/Index">WebApplication1</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="layout">
+        <!-- Barra lateral -->
+        <aside class="sidebar w-200" >
+            <div class="menu ">
+
+
+                
+                <!--VISTAS DE ADMIN-->
+                <a asp-action="Index" asp-controller="Usuarios" style="text-decoration: none">
+                    <div class="menu-item">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Usuarios</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+
+
+                <hr />
+                <br />
+
+               
+
+                <!--VISTAS DE EMPLEADO NORMAL-->
+                <a asp-action="Crear" asp-controller="OrdenesEmpleado" style="text-decoration: none">
+                    <div class="menu-item">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Crear orden</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+
+                <a asp-action="Index" asp-controller="OrdenesEmpleado" style="text-decoration: none">
+                    <div class="menu-item">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Ordenes</span>
+                        <i class="fas fa-chevron-right"></i>
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
