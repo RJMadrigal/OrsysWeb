@@ -13,6 +13,11 @@
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     }
 
+    input:disabled, select:disabled {
+        opacity: 0.5; /* Hacer más transparente */
+        cursor: not-allowed;
+    }
+
     h2 {
         color: #fff;
         margin-bottom: 20px;
@@ -133,7 +138,7 @@
 
             <div class="form-group role-selector">
                 <label for="roles">Asignar Jefe</label>
-                <select asp-for="IdJefe" id="roles" asp-items="ViewBag.Jefes"></select>
+                <select asp-for="IdJefe" id="jefe" asp-items="ViewBag.Jefes"></select>
             </div>
         </div>
 
@@ -172,4 +177,28 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        function toggleJefeSelect() {
+            const rolSelect = document.getElementById('roles');
+            const jefeSelect = document.getElementById('jefe');
+
+            // Cambia 'Empleado' por el valor real que representa ese rol en tu lista
+            if (rolSelect.value === '2') {
+                jefeSelect.disabled = false; // Habilita el select de jefe
+            } else {
+                jefeSelect.disabled = true; // Deshabilita el select de jefe
+                jefeSelect.selectedIndex = 0; // Resetea el select de jefe
+                jefeSelect.value = "";
+            }
+        }
+
+        // Ejecuta al cargar la página
+        document.addEventListener('DOMContentLoaded', function () {
+            toggleJefeSelect(); // Verifica el estado inicial al cargar
+        });
+
+        // Ejecuta cada vez que se cambia el select de roles
+        document.getElementById('roles').addEventListener('change', toggleJefeSelect);
+    </script>
 }
