@@ -54,6 +54,7 @@ namespace SistemaOrdenes.Services
             UsuarioEdit.Confirmado = usuario.Confirmado;
             UsuarioEdit.IdRol = usuario.IdRol;
             UsuarioEdit.IdJefe = usuario.IdJefe;
+            UsuarioEdit.Estado = usuario.Estado;
 
             //SE ACTUALIZA
             context.Update(UsuarioEdit);

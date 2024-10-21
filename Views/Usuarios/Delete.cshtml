@@ -1,18 +1,20 @@
 ﻿@model TbUsuario
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Eliminar Usuario";
 }
 
-<h1>Seguro que deseas eliminar el usuario?</h1>
-
-
-<form asp-action="Delete">
-
-    <input type="hidden" asp-for="IdUsuario" />
-    <button type="submit" asp-action="Delete" class="btn btn-danger">Eliminar</button>
-    <a asp-action="Index">Cancelar</a>
-
-</form>
-
-
+<div class="container d-flex justify-content-center align-items-center ">
+    <div class="card" style="background-color: rgba(42, 42, 42, 0.8); color: white; width: 30rem;">
+        <div class="card-body text-center">
+            <h2 class="card-title">¿Estás seguro de que deseas eliminar el usuario?</h2>
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="IdUsuario" />
+                <div class="actions">
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -20,6 +20,7 @@ namespace SistemaOrdenes.Models
 
         public int? IdJefe { get; set; }
 
+        public bool? Estado { get; set; }
 
     }
 }

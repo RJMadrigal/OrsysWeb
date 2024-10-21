@@ -127,6 +127,7 @@ namespace SistemaOrdenes.Controllers
                 Confirmado = usuarios.Confirmado,
                 IdRol = usuarios.IdRol,
                 IdJefe = usuarios.IdJefe,
+                Estado = usuarios.Estado
             };
 
             //CARGA LOS SELECT ITEM DE ROLES Y USUARIOS JEFES
@@ -155,19 +156,10 @@ namespace SistemaOrdenes.Controllers
                 await repositorioUsuarios.EditarUser(modelo);
                 return RedirectToAction("Index");
             }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                if (!UsuariosExists(modelo.IdUsuario))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            
             catch (Exception ex)
             {
+                Debug.WriteLine(ex);    
                 throw;
             }
 
