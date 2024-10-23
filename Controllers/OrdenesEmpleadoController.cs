@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SistemaOrdenes.Models;
 
 namespace SistemaOrdenes.Controllers
 {
@@ -17,6 +18,14 @@ namespace SistemaOrdenes.Controllers
         //MUESTRA LA VISTA DE CREAR ORDENES
         [Authorize(Roles = "Empleado")]
         public IActionResult Crear()
+        {
+            return View();
+        }
+
+
+        //POST DE CREAR ORDEN
+        [HttpPost]
+        public IActionResult Crear(CrearOrdenViewModel crearOrdenViewModel)
         {
             return View();
         }

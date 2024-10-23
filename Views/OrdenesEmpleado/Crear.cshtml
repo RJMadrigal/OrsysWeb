@@ -1,4 +1,6 @@
 ﻿
+@model CrearOrdenViewModel
+
 @{
 
     ViewData["tittle"] = "Crear orden";
@@ -109,26 +111,28 @@
 
 <div class="container">
 
-    <form>
+    <form asp-action="Crear">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
 
         <div class="form-row">
+
             <div class="form-group">
-                <label for="name">Nombre del artículo</label>
-                <input  type="text"  placeholder="Nombre del Artículo">
-                <span  class="text-danger"></span>
+                <label for="name" >Nombre del artículo</label>
+                <input asp-for="NombreArticulo" type="text" placeholder="Nombre del Artículo">
+                <span asp-validation-for="NombreArticulo" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label for="idUsuario">Modelo</label>
-                <input  type="text"  placeholder="Ingresa el Monto">
-                <span class="text-danger"></span>
+                <input asp-for="Modelo" type="text" placeholder="Ingresa el modelo">
+                <span asp-validation-for="Modelo" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label>Monto en colones</label>
-                <input type="number" placeholder="Ingresa el Monto en colones">
-                <span class="text-danger"></span>
+                <input asp-for="Precio" type="number" placeholder="Ingresa el Monto en colones">
+                <span asp-validation-for="Precio" class="text-danger"></span>
             </div>
             
         </div>
@@ -136,12 +140,16 @@
         <div class="form-row">
             <div class="form-group">
                 <label>Ingresa la cantidad</label>
-                <input type="number" placeholder="Ingresa la cantidad">
-                <span class="text-danger"></span>
+                <input asp-for="Cantidad" type="number" placeholder="Ingresa la cantidad">
+                <span asp-validation-for="Cantidad" class="text-danger"></span>
             </div>
 
+            <div class="form-group">
+                <label for="idUsuario">Detalles</label>
+                <input asp-for="Detalles" type="text" placeholder="Ingresa los detalles">
+                <span asp-validation-for="Detalles" class="text-danger"></span>
+            </div>
         </div>
-        
 
 
         <div class="actions">
