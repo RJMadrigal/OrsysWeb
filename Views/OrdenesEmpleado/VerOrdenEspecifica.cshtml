@@ -1,13 +1,13 @@
 ﻿
-@model IEnumerable<OrdenesViewModel>
+
+
 
 @{
-    ViewData["tittle"] = "Lista de ordenes";
+    ViewData["Title"] = "Ver orden";
 }
 
 
 <style>
-
     table.table-dark {
         background-color: #333;
         border-radius: 10px; /* Redondear los bordes de la tabla */
@@ -29,9 +29,9 @@
         transition: background-color 0.3s; /* Transición suave para el color de fondo */
     }
 
-    .btn-nuevo:hover {
-        background-color: lightslategrey; /* Cambia el color a un gris más claro (o el color que desees) */
-    }
+        .btn-nuevo:hover {
+            background-color: lightslategrey; /* Cambia el color a un gris más claro (o el color que desees) */
+        }
 
     .icono-accionEliminar {
         color: red; /* Cambia el color de los íconos */
@@ -43,9 +43,9 @@
         transition: color 0.3s; /* Transición suave para el color */
     }
 
-    .icono-accionEditar:hover {
-        color: forestgreen; /* Cambia el color al pasar el mouse (puedes personalizarlo) */
-    }
+        .icono-accionEditar:hover {
+            color: forestgreen; /* Cambia el color al pasar el mouse (puedes personalizarlo) */
+        }
 
     .icono-accionEliminar:hover {
         color: darkred; /* Cambia el color al pasar el mouse (puedes personalizarlo) */
@@ -72,58 +72,44 @@
         color: white;
     }
 
-
-
 </style>
 
 
-
-
-<div class="container">
-    <h1>Lista de ordenes creadas</h1>
-
-    
-    <hr />
-
-    <div class="d-flex justify-content-between mb-3">
-        <input type="text" class="form-control search-input" placeholder="Buscar" style="width: 300px;">
-    </div>
-
-    <table class="table table-dark table-hover">
-        <thead>
+<table class="table table-dark table-hover">
+    <thead>
+        <tr>
+            <th>#Orden</th>
+            <th>Nombre</th>
+            <th>Modelo</th>
+            <th>Fecha de solicitud</th>
+            <th>Monto</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ordenes in Model)
+        {
             <tr>
-                <th>#Orden</th>
-                <th>Nombre</th>
-                <th>Modelo</th>
-                <th>Fecha de solicitud</th>
-                <th>Monto</th>
-                <th>Estado</th>
+                <td>@ordenes.IdOrden</td>
+                <td>@ordenes.NombreArticulo</td>
+                <td>@ordenes.Modelo</td>
+                <td>@ordenes.FechaCreacion</td>
+                <td>@ordenes.Total</td>
+                <td>
+                    @if (ordenes.Estado == "Aprobada")
+                    {
+                        <span class="text-success">@ordenes.Estado</span>
+                    }
+                    else if (ordenes.Estado == "Rechazada")
+                    {
+                        <span class="text-danger">@ordenes.Estado</span>
+                    }
+                    else if (ordenes.Estado == "Pendiente" || ordenes.Estado == "Aprobado por jefe")
+                    {
+                        <span class="text-warning">@ordenes.Estado</span>
+                    }
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach(var ordenes in Model)
-            {
-                <tr>
-                    <td>@ordenes.IdOrden</td>
-                    <td>@ordenes.NombreArticulo</td>
-                    <td>@ordenes.Modelo</td>
-                    <td>@ordenes.FechaCreacion</td>
-                    <td>@ordenes.Total</td>
-                    <td>
-                        @if(ordenes.Estado == "Aprobada")
-                        {
-                            <span class="text-success">@ordenes.Estado</span>
-                        }else if (ordenes.Estado == "Rechazada")
-                        {
-                            <span class="text-danger">@ordenes.Estado</span>
-                        }else if (ordenes.Estado == "Pendiente" || ordenes.Estado == "Aprobado por jefe"){
-                            <span class="text-warning">@ordenes.Estado</span>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
-
+        }
+    </tbody>
+</table>

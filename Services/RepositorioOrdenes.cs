@@ -59,6 +59,8 @@ namespace SistemaOrdenes.Services
                 FechaCreacion = x.FechaCreacion,
                 Total = x.Total,
                 Estado = x.Estado,
+                NombreArticulo = x.NombreArticulo,
+                Modelo = x.Modelo,
             }).ToListAsync();
         }
     }

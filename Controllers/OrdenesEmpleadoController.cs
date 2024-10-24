@@ -90,9 +90,15 @@ namespace SistemaOrdenes.Controllers
 
         //MUESTRA LA VISTA DE REPORTES
         [Authorize(Roles = "Empleado")]
-        public IActionResult Reportes()
+        public async Task<IActionResult> Reportes()
         {
-            return View();
+            //SE OBTIENE EL ID DEL USUARIO LOGEADO
+            int usuarioId = servicioUsuario.ObtenerUsuarioId();
+
+            var listaOrdenes = await repositorioOrdenes.ObtenerOrdenesComprador(usuarioId);
+
+            //ENVIA LA LISTA DE ORDENES
+            return View(listaOrdenes);
         }
     }
 }
