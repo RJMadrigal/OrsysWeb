@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaOrdenes.Models;
 
@@ -11,9 +12,11 @@ using SistemaOrdenes.Models;
 namespace SistemaOrdenes.Migrations
 {
     [DbContext(typeof(DbProyectoAnalisisIiContext))]
-    partial class DbProyectoAnalisisIiContextModelSnapshot : ModelSnapshot
+    [Migration("20241024183318_estadoAgregado")]
+    partial class estadoAgregado
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

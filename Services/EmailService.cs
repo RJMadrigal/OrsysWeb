@@ -24,6 +24,8 @@ namespace SistemaOrdenes.Services
             _env = env;  // Inyectar IHostEnvironment
         }
 
+
+        //ENVIA UN CORREO
         public async Task<bool> SendEmail(Email correodto)
         {
             try
@@ -51,7 +53,10 @@ namespace SistemaOrdenes.Services
             }
         }
 
+        
 
+
+        //PREPARA EL CORREO PARA ENVIAR UN CORREO DE CONFIRMACION
         public async Task<bool> SendConfirmationEmail(string Correo, string Nombre, string Token)
         {
             try
@@ -91,6 +96,8 @@ namespace SistemaOrdenes.Services
 
         }
 
+
+        //PREPARA EL CORREO PARA RESETEAR LA CONTRASEÑA
         public async Task<bool> SendResetPasswordEmail(string Correo, string Nombre, string Token)
         {
             try
@@ -131,6 +138,9 @@ namespace SistemaOrdenes.Services
             }
         }
 
+
+
+        //ENVIAR EMAIL AL JEFE DEL USUARIO
 
     }
 

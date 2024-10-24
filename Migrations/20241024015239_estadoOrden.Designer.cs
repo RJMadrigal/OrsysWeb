@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaOrdenes.Models;
 
@@ -11,9 +12,11 @@ using SistemaOrdenes.Models;
 namespace SistemaOrdenes.Migrations
 {
     [DbContext(typeof(DbProyectoAnalisisIiContext))]
-    partial class DbProyectoAnalisisIiContextModelSnapshot : ModelSnapshot
+    [Migration("20241024015239_estadoOrden")]
+    partial class estadoOrden
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,7 +46,7 @@ namespace SistemaOrdenes.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<DateTime>("FechaActualizacion")
+                    b.Property<DateTime?>("FechaActualizacion")
                         .HasColumnType("datetime")
                         .HasColumnName("Fecha_Actualizacion");
 
@@ -83,9 +86,8 @@ namespace SistemaOrdenes.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(150)");
 
-                    b.Property<string>("Estado")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("FechaCreacion")
                         .HasColumnType("datetime")
