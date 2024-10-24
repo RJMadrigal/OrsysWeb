@@ -106,7 +106,15 @@
                     <td>@ordenes.FechaCreacion</td>
                     <td>@ordenes.Total</td>
                     <td>
-                        <span class="text-success">@ordenes.Estado</span>
+                        @if(ordenes.Estado == "Aprobada")
+                        {
+                            <span class="text-success">@ordenes.Estado</span>
+                        }else if (ordenes.Estado == "Rechazada")
+                        {
+                            <span class="text-danger">@ordenes.Estado</span>
+                        }else if (ordenes.Estado == "Pendiente" || ordenes.Estado == "Aprobado por jefe"){
+                            <span class="text-warning">@ordenes.Estado</span>
+                        }
                     </td>
                 </tr>
             }

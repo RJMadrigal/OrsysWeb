@@ -72,6 +72,16 @@ namespace SistemaOrdenes.Controllers
             }
             else
             {
+
+                //OBTIENE EL CORREO DEL JEFE
+                var obtenerCorreoJefe  = await servicioUsuario.ObtenerCorreoJefe();
+
+
+                //LOGICA PARA ENVIAR EL CORREO AL JEFE
+
+
+
+
                 return RedirectToAction("Index");
             }
 

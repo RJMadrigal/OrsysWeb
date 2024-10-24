@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SistemaOrdenes.Models;
 using System.Diagnostics;
+using System.Runtime.InteropServices.Marshalling;
 using System.Security.Claims;
 
 namespace SistemaOrdenes.Services
@@ -148,6 +149,31 @@ namespace SistemaOrdenes.Services
         }
 
 
+        public async Task<string> ObtenerCorreoJefe()
+        {
+            if (httpContext.User.Identity.IsAuthenticated)
+            {
+                var idClaim = httpContext.User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault();
+                var id = int.Parse(idClaim.Value);
+
+                //OBTIENE EL CORREO DEL USUARIO JEFE
+                var correo = await context.TbUsuarios
+                    .Where(u => u.IdUsuario == id)
+                    .Select(u => u.IdJefe)
+                    .Join(context.TbUsuarios, idJefe => idJefe,
+                         jefe => jefe.IdUsuario,
+                         (idJefe, jefe) => jefe.Correo)
+                    .FirstOrDefaultAsync();
+
+                //RETORNA EL CORREO
+                return correo;
+
+            }
+            else
+            {
+                throw new Exception("El usuario no está autenticado");
+            }
+        }
 
     }
 }
