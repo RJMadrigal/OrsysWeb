@@ -18,5 +18,7 @@ namespace SistemaOrdenes.Models
 
         [Required(ErrorMessage = "Debes ingresar detalles adicionales")]
         public string Detalles { get; set; } = null!;
+
+        public int idUsuario { get; set; }
     }
 }

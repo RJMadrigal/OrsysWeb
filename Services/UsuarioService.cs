@@ -1,17 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using SistemaOrdenes.Models;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace SistemaOrdenes.Services
 {
     public class UsuarioService
     {
         private readonly DbProyectoAnalisisIiContext context;
+        private readonly HttpContext httpContext;
 
-
-        public UsuarioService(DbProyectoAnalisisIiContext context)
+        public UsuarioService(DbProyectoAnalisisIiContext context, IHttpContextAccessor httpContextAccessor)
         {
-            
+            httpContext = httpContextAccessor.HttpContext;
             this.context = context;
 
         }
@@ -124,6 +126,25 @@ namespace SistemaOrdenes.Services
                 Debug.WriteLine($"Error al confirmar usuario: {ex}");
                 throw ex;
             }
+        }
+
+
+
+        //OBTIENE EL ID DEL USUARIO AUTENTICADO
+        public int ObtenerUsuarioId()
+        {
+            if (httpContext.User.Identity.IsAuthenticated)
+            {
+                var idClaim = httpContext.User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault();
+                var id = int.Parse(idClaim.Value);
+                return id;
+
+            }
+            else
+            {
+                throw new Exception("El usuario no está autenticado");
+            }
+
         }
 
 

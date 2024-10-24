@@ -16,6 +16,7 @@ builder.Services.AddDbContext<DbProyectoAnalisisIiContext>(options =>
 
 
 builder.Services.AddTransient<IRepositorioUsuarios, RepositorioUsuarios>();
+builder.Services.AddTransient<IRepositorioOrdenes, RepositorioOrdenes>();
 
 
 
