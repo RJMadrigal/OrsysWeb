@@ -1,4 +1,6 @@
 ﻿
+@model IEnumerable<OrdenesViewModel>
+
 @{
     ViewData["tittle"] = "Lista de ordenes";
 }
@@ -97,16 +99,17 @@
             </tr>
         </thead>
         <tbody>
-            
+            @foreach(var ordenes in Model)
+            {
                 <tr>
-                    <td>1</td>
-                    <td>8-10-2024</td>
-                    <td>22.687</td>
+                    <td>@ordenes.IdOrden</td>
+                    <td>@ordenes.FechaCreacion</td>
+                    <td>@ordenes.Total</td>
                     <td>
-                       <span class="text-success">Aprobado</span>
-                       @* <span class="text-danger">Inactivo</span> *@
+                        <span class="text-success">@ordenes.Estado</span>
                     </td>
                 </tr>
+            }
         </tbody>
     </table>
 </div>

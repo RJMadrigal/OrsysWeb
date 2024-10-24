@@ -22,9 +22,15 @@ namespace SistemaOrdenes.Controllers
 
         //MUESTRA LA VISTA DE INDEX
         [Authorize(Roles = "Empleado")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            //SE OBTIENE EL ID DEL USUARIO LOGEADO
+            int usuarioId = servicioUsuario.ObtenerUsuarioId();
+
+            var listaOrdenes = await repositorioOrdenes.ObtenerOrdenesComprador(usuarioId);
+
+            //ENVIA LA LISTA DE ORDENES
+            return View(listaOrdenes);
         }
 
 

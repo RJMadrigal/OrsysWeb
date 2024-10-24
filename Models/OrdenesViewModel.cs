@@ -6,13 +6,9 @@
 
         public DateTime FechaCreacion { get; set; }
 
-        public string NombreArticulo { get; set; } = null!;
-
-        public string Modelo { get; set; } = null!;
-
         public decimal? Total { get; set; }
 
+        public string Estado { get; set; }
 
-        
     }
 }

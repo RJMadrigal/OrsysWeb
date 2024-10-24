@@ -7,6 +7,7 @@ namespace SistemaOrdenes.Services
     public interface IRepositorioOrdenes
     {
         Task<bool> CrearOrden(CrearOrdenViewModel modelo);
+        Task<List<OrdenesViewModel>> ObtenerOrdenesComprador(int idUsuario);
     }
 
 
@@ -44,5 +45,20 @@ namespace SistemaOrdenes.Services
         }
 
 
+        //OBTIENE LA LISTA DE ORDENES DEL USUARIO
+        public async Task<List<OrdenesViewModel>> ObtenerOrdenesComprador(int idUsuario)
+        {
+
+            //SELECCIONA LA LISTA DE ORDENES POR ID
+            return await context.TbOrdens
+            .Where(x=> x.IdUsuarioComprador == idUsuario)
+            .Select(x => new OrdenesViewModel
+            {
+                IdOrden = x.IdOrden,
+                FechaCreacion = x.FechaCreacion,
+                Total = x.Total,
+                Estado = x.Estado,
+            }).ToListAsync();
+        }
     }
 }
