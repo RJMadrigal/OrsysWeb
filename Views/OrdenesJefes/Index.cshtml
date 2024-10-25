@@ -1,4 +1,6 @@
-﻿
+﻿@model IEnumerable<OrdenesViewModel>
+
+
 @{
     ViewData["Tittle"] = "Lista de ordenes";
 }
@@ -87,26 +89,45 @@
         <thead>
             <tr>
                 <th>#Orden</th>
+                <th>Nombre del artículo</th>
+                <th>Modelo</th>
                 <th>Fecha de solicitud</th>
-                <th>Ultima actualización</th>
+                <th>Total</th>
+                <th>Solicitante</th>
                 <th>Acción</th>
                 <th>Estado</th>
             </tr>
         </thead>
         <tbody>
-
-            <tr>
-                <td>1</td>
-                <td>8-10-2024</td>
-                <td>10-10-2024</td>
-                <td>
-                    <a asp-action="Revisar" style="color: blue">Revisar</a>
-                </td>
-                <td>
-                    <span class="text-success">Aprobado</span>
-                    @* <span class="text-danger">Inactivo</span> *@
-                </td>
-            </tr>
+            @foreach(var modelo in Model)
+            {
+                <tr>
+                    <td>@modelo.IdOrden</td>
+                    <td>@modelo.NombreArticulo</td>
+                    <td>@modelo.Modelo</td>
+                    <td>@modelo.FechaCreacion</td>
+                    <td>@modelo.Total</td>
+                    <td>@modelo.Solicitante</td>
+                    <td>
+                        <a asp-action="Revisar" asp-route-id="@modelo.IdOrden" style="color: blue">Revisar</a>
+                    </td>
+                    <td>
+                        @if (modelo.Estado == "Aprobada")
+                        {
+                            <span class="text-success">@modelo.Estado</span>
+                        }
+                        else if (modelo.Estado == "Rechazada")
+                        {
+                            <span class="text-danger">@modelo.Estado</span>
+                        }
+                        else if (modelo.Estado == "Pendiente" || modelo.Estado == "Aprobado por jefe")
+                        {
+                            <span class="text-warning">@modelo.Estado</span>
+                        }
+                    </td>
+                </tr>
+            }
+            
         </tbody>
     </table>
 </div>

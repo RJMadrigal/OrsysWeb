@@ -14,5 +14,7 @@
 
         public string Estado { get; set; }
 
+        public string Solicitante { get; set; }
+
     }
 }

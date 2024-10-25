@@ -1,4 +1,6 @@
 ﻿
+@model InfoOrdenViewModel
+
 @{
     ViewData["Tittle"] = "Revisar orden";
 }
@@ -132,50 +134,53 @@
         <thead>
             <tr>
                 <th>Artículo</th>
-                <th>Marca</th>
                 <th>Modelo</th>
                 <th>Cantidad</th>
                 <th>Monto</th>
+                <th>Solicitante</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>Artículo 2</td>
-                <td>Marca 2</td>
-                <td>Modelo 2</td>
-                <td>1</td>
-                <td>€12.687</td>
+                <td>@Model.NombreArticulo</td>
+                <td>@Model.Modelo</td>
+                <td>@Model.Cantidad</td>
+                <td>@Model.Total</td>
+                <td>@Model.Solicitante</td>
             </tr>
         </tbody>
     </table>
 
-    <div class="estado-select">
-        <label for="estado">Estado</label>
-        <select id="estado">
-            <option value="">Elija Una Opción</option>
-            <option value="aprobar">Aprobar</option>
-            <option value="denegar">Denegar</option>
-        </select>
-    </div>
-
-    <div class="estado-buttons">
-        <a href="#">Aprobar</a>
-        <a href="#">Denegar</a>
-    </div>
 
     <div class="comentarios">
-        <label for="comentarios">Comentarios del Solicitante</label>
-        <textarea id="comentarios" rows="3">Factura se para en 3 tractos quincenales iniciando el 07/24</textarea>
+        <label for="comentarios">Comentarios</label>
+        <textarea id="comentarios" rows="3" contenteditable="false">@Model.Detalles</textarea>
     </div>
 
-    <div class="comentarios">
-        <label for="comentarios">Agregar comentario</label>
-        <textarea id="comentarios" rows="3" placeholder="Agrega algún comentario adicional"></textarea>
-    </div>
+    <form asp-action="ActualizarOrden" method="post">
 
-    <div class="update-btn">
-        <button>Actualizar</button>
-    </div>
+        <input type="hidden" name="idOrden" value="@Model.IdOrden" />
+
+        <div class="estado-select">
+            <label for="estado">Estado</label>
+            <select id="estado" name="estado" required class="form-control">
+                <option value="">Elija Una Opción</option>
+                <option value="Aprobada">Aprobar</option>
+                <option value="Rechazada">Denegar</option>
+            </select>
+        </div>
+
+        <div class="comentarios">
+            <label for="comentarios">Agregar comentario</label>
+            <textarea id="comentarios" name="comentarios" required rows="3" placeholder="Agrega algún comentario adicional"></textarea>
+        </div>
+
+        <div class="update-btn">
+            <button type="submit">Actualizar</button>
+        </div>
+    </form>
+
+    
 </div>
 
 

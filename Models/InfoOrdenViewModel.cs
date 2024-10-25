@@ -18,7 +18,11 @@
         public string JefeAprobador { get; set; }
         public string JefeFinanciero { get; set; }
 
+        public string Solicitante { get; set; }
 
+        public int Cantidad { get; set; }
+
+        public string Detalles { get; set; }
 
     }
 }
