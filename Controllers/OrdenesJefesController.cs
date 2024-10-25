@@ -39,7 +39,7 @@ namespace SistemaOrdenes.Controllers
 
 
        
-
+        //REVISA UNA ORDEN EN ESPECIFICA
         [Authorize(Roles = "Jefe, Jefe aprobador 1, Jefe aprobador 2, Jefe aprobador 3")]
         public async Task<IActionResult> Revisar(int id)
         {
@@ -73,6 +73,9 @@ namespace SistemaOrdenes.Controllers
 
 
 
+
+
+        //NO TIENE FUNCIONALIDAD POR EL MOMENTO
         [Authorize(Roles = "Jefe, Jefe aprobador 1, Jefe aprobador 2, Jefe aprobador 3")]
         public IActionResult Reportes()
         {

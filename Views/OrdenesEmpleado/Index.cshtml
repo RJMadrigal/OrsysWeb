@@ -113,7 +113,7 @@
                         @if(ordenes.Estado == "Aprobada")
                         {
                             <span class="text-success">@ordenes.Estado</span>
-                        }else if (ordenes.Estado == "Rechazada")
+                        }else if (ordenes.Estado == "Rechazada" || ordenes.Estado == "Rechazado por jefe")
                         {
                             <span class="text-danger">@ordenes.Estado</span>
                         }else if (ordenes.Estado == "Pendiente" || ordenes.Estado == "Aprobado por jefe"){
