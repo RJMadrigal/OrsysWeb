@@ -23,6 +23,7 @@ public partial class DbProyectoAnalisisIiContext : DbContext
 
     public virtual DbSet<TbUsuario> TbUsuarios { get; set; }
 
+
     //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //    => optionsBuilder.UseSqlServer("Name=DefaultConnection");
 
@@ -150,6 +151,8 @@ public partial class DbProyectoAnalisisIiContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__tb_Usuari__ID_Ro__656C112C");
         });
+
+
 
         OnModelCreatingPartial(modelBuilder);
     }

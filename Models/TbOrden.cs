@@ -23,6 +23,8 @@ public partial class TbOrden
 
     public decimal? Total { get; set; }
 
+    public string Estado { get; set; }
+
     public virtual TbUsuario IdUsuarioCompradorNavigation { get; set; } = null!;
 
     public virtual ICollection<TbHistorial> TbHistorials { get; set; } = new List<TbHistorial>();

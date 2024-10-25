@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaOrdenes.Models;
 
@@ -11,9 +12,11 @@ using SistemaOrdenes.Models;
 namespace SistemaOrdenes.Migrations
 {
     [DbContext(typeof(DbProyectoAnalisisIiContext))]
-    partial class DbProyectoAnalisisIiContextModelSnapshot : ModelSnapshot
+    [Migration("20241024165706_nuevaTabla")]
+    partial class nuevaTabla
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,6 +68,33 @@ namespace SistemaOrdenes.Migrations
                     b.ToTable("tb_Historial", (string)null);
                 });
 
+            modelBuilder.Entity("SistemaOrdenes.Models.TbNivelesAprobacion", b =>
+                {
+                    b.Property<int>("IdNivel")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdNivel"));
+
+                    b.Property<int>("AprobadorFinancieroIdUsuario")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdAprobadorFinanciero")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("MontoMax")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MontoMin")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("IdNivel");
+
+                    b.HasIndex("AprobadorFinancieroIdUsuario");
+
+                    b.ToTable("NivelesAprobacion");
+                });
+
             modelBuilder.Entity("SistemaOrdenes.Models.TbOrden", b =>
                 {
                     b.Property<int>("IdOrden")
@@ -82,10 +112,6 @@ namespace SistemaOrdenes.Migrations
                         .HasMaxLength(150)
                         .IsUnicode(false)
                         .HasColumnType("varchar(150)");
-
-                    b.Property<string>("Estado")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("FechaCreacion")
                         .HasColumnType("datetime")
@@ -241,6 +267,17 @@ namespace SistemaOrdenes.Migrations
                     b.Navigation("IdOrdenNavigation");
 
                     b.Navigation("IdUsuarioNavigation");
+                });
+
+            modelBuilder.Entity("SistemaOrdenes.Models.TbNivelesAprobacion", b =>
+                {
+                    b.HasOne("SistemaOrdenes.Models.TbUsuario", "AprobadorFinanciero")
+                        .WithMany()
+                        .HasForeignKey("AprobadorFinancieroIdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AprobadorFinanciero");
                 });
 
             modelBuilder.Entity("SistemaOrdenes.Models.TbOrden", b =>

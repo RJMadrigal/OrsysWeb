@@ -1,4 +1,6 @@
 ﻿
+@model IEnumerable<OrdenesViewModel>
+
 @{
     ViewData["tittle"] = "Lista de ordenes";
 }
@@ -63,12 +65,12 @@
     }
 
 
-        .search-input:focus {
-            background-color: #555; /* Color de fondo cuando está en foco */
-            border-color: #888; /* Cambiar el color del borde cuando está en foco */
-            outline: none; /* Quitar el borde azul predeterminado */
-            color: white;
-        }
+    .search-input:focus {
+        background-color: #555; /* Color de fondo cuando está en foco */
+        border-color: #888; /* Cambiar el color del borde cuando está en foco */
+        outline: none; /* Quitar el borde azul predeterminado */
+        color: white;
+    }
 
 
 
@@ -91,24 +93,35 @@
         <thead>
             <tr>
                 <th>#Orden</th>
+                <th>Nombre</th>
+                <th>Modelo</th>
                 <th>Fecha de solicitud</th>
-                <th>Ultima actualización</th>
                 <th>Monto</th>
                 <th>Estado</th>
             </tr>
         </thead>
         <tbody>
-            
+            @foreach(var ordenes in Model)
+            {
                 <tr>
-                    <td>1</td>
-                    <td>8-10-2024</td>
-                    <td>10-10-2024</td>
-                    <td>22.687</td>
+                    <td>@ordenes.IdOrden</td>
+                    <td>@ordenes.NombreArticulo</td>
+                    <td>@ordenes.Modelo</td>
+                    <td>@ordenes.FechaCreacion</td>
+                    <td>@ordenes.Total</td>
                     <td>
-                       <span class="text-success">Aprobado</span>
-                       @* <span class="text-danger">Inactivo</span> *@
+                        @if(ordenes.Estado == "Aprobada")
+                        {
+                            <span class="text-success">@ordenes.Estado</span>
+                        }else if (ordenes.Estado == "Rechazada" || ordenes.Estado == "Rechazado por jefe")
+                        {
+                            <span class="text-danger">@ordenes.Estado</span>
+                        }else if (ordenes.Estado == "Pendiente" || ordenes.Estado == "Aprobado por jefe"){
+                            <span class="text-warning">@ordenes.Estado</span>
+                        }
                     </td>
                 </tr>
+            }
         </tbody>
     </table>
 </div>
