@@ -175,5 +175,53 @@ namespace SistemaOrdenes.Services
             }
         }
 
+
+        //OBTIENE EL ID DEL JEFE DEL USUARIO
+        public async Task<int> ObtenerIdJefe()
+        {
+
+            if (httpContext.User.Identity.IsAuthenticated)
+            {
+                var idClaim = httpContext.User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault();
+                var id = int.Parse(idClaim.Value);
+
+                //OBTIENE EL ID DEL USUARIO JEFE
+                var idJefe = await context.TbUsuarios.Where(x => x.IdUsuario == id).Select(x => x.IdJefe).FirstOrDefaultAsync();
+
+
+                //RETORNA EL CORREO
+                return int.Parse(idJefe.ToString());
+
+            }
+            else
+            {
+                throw new Exception("El usuario no está autenticado");
+            }
+        }
+
+
+
+        //OBTIENE EL NOMBRE DEL JEFE DEL USUARIO x ID
+        public async Task<string> ObtenerNombreJefe(int id)
+        {
+            var NombreJefe = await context.TbUsuarios.Where(x => x.IdUsuario == id).Select(x => x.Nombre).FirstOrDefaultAsync();
+
+            return NombreJefe;
+        }
+
+
+
+        //OBTENER EL NOMBRE DEL JEFE FINANCIERO
+        public async Task<string> ObtenerJefeFinanciero(int idOrden)
+        {
+            var NombreJefeFinanciero = await context.TbHistorials
+                .Where(x => x.IdOrden == idOrden && x.IdUsuarioNavigation.IdRolNavigation.NombreRol.StartsWith("Jefe aprob"))
+                .Select(h => h.IdUsuarioNavigation.Nombre).FirstOrDefaultAsync();
+
+            return NombreJefeFinanciero;
+        }
+
+       
+
     }
 }

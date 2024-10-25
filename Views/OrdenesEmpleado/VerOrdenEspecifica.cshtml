@@ -1,4 +1,4 @@
-﻿
+﻿@model InfoOrdenViewModel
 
 
 
@@ -83,33 +83,40 @@
             <th>Modelo</th>
             <th>Fecha de solicitud</th>
             <th>Monto</th>
+            <th>Jefe aprobador</th>
+            <th>Jefe financiero</th>
             <th>Estado</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var ordenes in Model)
-        {
-            <tr>
-                <td>@ordenes.IdOrden</td>
-                <td>@ordenes.NombreArticulo</td>
-                <td>@ordenes.Modelo</td>
-                <td>@ordenes.FechaCreacion</td>
-                <td>@ordenes.Total</td>
-                <td>
-                    @if (ordenes.Estado == "Aprobada")
-                    {
-                        <span class="text-success">@ordenes.Estado</span>
-                    }
-                    else if (ordenes.Estado == "Rechazada")
-                    {
-                        <span class="text-danger">@ordenes.Estado</span>
-                    }
-                    else if (ordenes.Estado == "Pendiente" || ordenes.Estado == "Aprobado por jefe")
-                    {
-                        <span class="text-warning">@ordenes.Estado</span>
-                    }
-                </td>
-            </tr>
-        }
+        
+        <tr>
+            <td>@Model.IdOrden</td>
+            <td>@Model.NombreArticulo</td>
+            <td>@Model.Modelo</td>
+            <td>@Model.FechaCreacion</td>
+            <td>@Model.Total</td>
+            <td>@Model.JefeAprobador</td>
+            @if (Model.JefeFinanciero == null)
+            {
+                <td>Sin asignar</td>
+            }else{
+                <td>@Model.JefeFinanciero</td>
+            }
+            <td>
+                @if (Model.Estado == "Aprobada")
+                {
+                    <span class="text-success">@Model.Estado</span>
+                }
+                else if (Model.Estado == "Rechazada")
+                {
+                    <span class="text-danger">@Model.Estado</span>
+                }
+                else if (Model.Estado == "Pendiente" || Model.Estado == "Aprobado por jefe")
+                {
+                    <span class="text-warning">@Model.Estado</span>
+                }
+            </td>
+        </tr>
     </tbody>
 </table>

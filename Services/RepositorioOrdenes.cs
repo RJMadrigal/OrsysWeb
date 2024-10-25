@@ -8,6 +8,7 @@ namespace SistemaOrdenes.Services
     {
         Task<bool> CrearOrden(CrearOrdenViewModel modelo);
         Task<List<OrdenesViewModel>> ObtenerOrdenesComprador(int idUsuario);
+        Task<InfoOrdenViewModel> ObtenerOrdenPorId(int id, string NombreJefe, string NombreJefeFinanciero);
     }
 
 
@@ -62,6 +63,25 @@ namespace SistemaOrdenes.Services
                 NombreArticulo = x.NombreArticulo,
                 Modelo = x.Modelo,
             }).ToListAsync();
+        }
+
+
+
+        //OBTENER LA ORDEN POR ID
+        public async Task<InfoOrdenViewModel> ObtenerOrdenPorId(int id, string NombreJefe, string NombreJefeFinanciero)
+        {
+            return await context.TbOrdens.Where(x => x.IdOrden == id)
+                .Select(x => new InfoOrdenViewModel
+                {
+                    IdOrden = x.IdOrden,
+                    NombreArticulo = x.NombreArticulo,
+                    Modelo = x.Modelo,
+                    FechaCreacion = x.FechaCreacion,
+                    Total = x.Total,
+                    Estado = x.Estado,
+                    JefeAprobador = NombreJefe,
+                    JefeFinanciero = NombreJefeFinanciero
+                }).FirstOrDefaultAsync();
         }
     }
 }

@@ -34,6 +34,40 @@ namespace SistemaOrdenes.Controllers
         }
 
 
+        [Authorize(Roles = "Empleado")]
+        public async Task<IActionResult> VerOrdenEspecifica(int id)
+        {
+            //SE OBTIENE EL ID DEL JEFE
+            int idJefe = await servicioUsuario.ObtenerIdJefe();
+
+            if(idJefe == null)
+            {
+                return NotFound();
+            }
+
+            //SE OBTIENE EL NOMBRE DEL JEFE
+            var NombreJefe = await servicioUsuario.ObtenerNombreJefe(idJefe);
+
+            if (NombreJefe == null)
+            {
+                return NotFound();
+            }
+
+            var nombreJefeFinanciero = await servicioUsuario.ObtenerJefeFinanciero(id);
+
+
+            //SE OBTIENE LA ORDEN POR ID Y SE ENVIA EL NOMBRE DEL JEFE APROBADOR
+            var orden = await repositorioOrdenes.ObtenerOrdenPorId(id, NombreJefe, nombreJefeFinanciero);
+
+            if(orden == null)
+            {
+                return NotFound();
+            }
+
+            return View(orden);
+        }
+
+
         //MUESTRA LA VISTA DE CREAR ORDENES
         [Authorize(Roles = "Empleado")]
         public IActionResult Crear()
