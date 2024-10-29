@@ -148,32 +148,67 @@ namespace SistemaOrdenes.Services
 
         }
 
+        public async Task<TbUsuario> ObtenerDatosUserOrden(int id)
+        {
+            int IdComprador = await context.TbOrdens
+                .Where(x => x.IdOrden == id)
+                .Select(x => x.IdUsuarioComprador)
+                .FirstOrDefaultAsync();
 
-        public async Task<string> ObtenerCorreoJefe()
+            if (IdComprador == 0)
+                throw new Exception("No se encontró el usuario comprador actual.");
+
+            var usuarioComprador = await context.TbUsuarios
+                .Where(u => u.IdUsuario == IdComprador)
+                .FirstOrDefaultAsync();
+
+            return usuarioComprador;
+        }
+
+        public async Task<TbUsuario> ObtenerDatosUser()
+        {
+            int id = ObtenerUsuarioId();
+
+            var usuario = await context.TbUsuarios
+                .Where(x => x.IdUsuario == id)
+                .FirstOrDefaultAsync();
+
+            if (usuario == null)
+                throw new Exception("No se encontró el usuario actual.");
+
+            return usuario;
+        }
+
+        public async Task<TbUsuario> ObtenerDatosJefe()
         {
             if (httpContext.User.Identity.IsAuthenticated)
             {
-                var idClaim = httpContext.User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault();
+                var idClaim = httpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+                if (idClaim == null)
+                    throw new Exception("No se encontró el identificador de usuario en los reclamos.");
+
                 var id = int.Parse(idClaim.Value);
 
-                //OBTIENE EL CORREO DEL USUARIO JEFE
-                var correo = await context.TbUsuarios
+                // OBTIENE TODOS LOS DATOS DEL USUARIO JEFE
+                var jefe = await context.TbUsuarios
                     .Where(u => u.IdUsuario == id)
                     .Select(u => u.IdJefe)
                     .Join(context.TbUsuarios, idJefe => idJefe,
-                         jefe => jefe.IdUsuario,
-                         (idJefe, jefe) => jefe.Correo)
+                          jefeUsuario => jefeUsuario.IdUsuario,
+                          (idJefe, jefeUsuario) => jefeUsuario)
                     .FirstOrDefaultAsync();
 
-                //RETORNA EL CORREO
-                return correo;
+                if (jefe == null)
+                    throw new Exception("No se encontró el jefe para el usuario actual.");
 
+                return jefe;
             }
             else
             {
                 throw new Exception("El usuario no está autenticado");
             }
         }
+
 
 
         //OBTIENE EL ID DEL JEFE DEL USUARIO

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using SistemaOrdenes.Models;
 using SistemaOrdenes.Services;
+using SistemaOrdenes.Services.Interfaces;
 
 namespace SistemaOrdenes.Controllers
 {
@@ -11,9 +12,10 @@ namespace SistemaOrdenes.Controllers
 
         private readonly UsuarioService servicioUsuario;
         private readonly IRepositorioOrdenes repositorioOrdenes;
-
-        public OrdenesEmpleadoController(UsuarioService servicioUsuario, IRepositorioOrdenes repositorioOrdenes) {
-
+        private readonly IEmailService emailService;
+        public OrdenesEmpleadoController(UsuarioService servicioUsuario, IRepositorioOrdenes repositorioOrdenes,IEmailService emailService) 
+        {
+            this.emailService = emailService;
             this.servicioUsuario = servicioUsuario;
             this.repositorioOrdenes = repositorioOrdenes;
         }
@@ -76,49 +78,47 @@ namespace SistemaOrdenes.Controllers
         }
 
 
-        //POST DE CREAR ORDEN
+        // POST DE CREAR ORDEN
         [HttpPost]
         public async Task<IActionResult> Crear(CrearOrdenViewModel crearOrdenViewModel)
         {
-            //SE OBTIENE EL ID DEL USUARIO AUTENTICADO
+            // SE OBTIENE EL ID DEL USUARIO AUTENTICADO
             int usuarioId = servicioUsuario.ObtenerUsuarioId();
 
-
-            //SE PASA EL USUARIOID AL MODELO
+            // SE PASA EL USUARIOID AL MODELO
             crearOrdenViewModel.idUsuario = usuarioId;
 
-
-            //SI EL MODELO NO ES VALIDO...
-            if(!ModelState.IsValid)
+            // SI EL MODELO NO ES VÁLIDO...
+            if (!ModelState.IsValid)
             {
                 return View(crearOrdenViewModel);
             }
 
-            //SE CREA LA ORDEN MEDIANTE EL PROCEDIMIENTO ALMACENADO
-            var resultado = await repositorioOrdenes.CrearOrden(crearOrdenViewModel);
+            // SE CREA LA ORDEN MEDIANTE EL PROCEDIMIENTO ALMACENADO
+            var idOrden = await repositorioOrdenes.CrearOrden(crearOrdenViewModel);
 
-
-            //SI HUBO ALGUN ERROR AL EJECUTAR EL PROCEDIMIENTO ALMACENADO...
-            if(resultado == false)
+            // SI HUBO ALGÚN ERROR AL EJECUTAR EL PROCEDIMIENTO ALMACENADO 
+            if (idOrden == null)
             {
                 ModelState.AddModelError("", "Error al crear la orden");
-                return View(resultado);
+                return View(crearOrdenViewModel);
             }
-            else
+
+            // OBTIENE LOS DATOS DEL JEFE
+            var jefe = await servicioUsuario.ObtenerDatosJefe();
+
+            // LÓGICA PARA ENVIAR EL CORREO AL JEFE
+            var envio = await emailService.EnviarJefeDirectoEmail(jefe.Correo, jefe.Nombre, idOrden.Value);
+
+            // SI EL CORREO SE ENVÍA CON ÉXITO, REDIRIGE A LA PÁGINA PRINCIPAL
+            if (envio)
             {
-
-                //OBTIENE EL CORREO DEL JEFE
-                var obtenerCorreoJefe  = await servicioUsuario.ObtenerCorreoJefe();
-
-
-                //LOGICA PARA ENVIAR EL CORREO AL JEFE
-
-
-
-
                 return RedirectToAction("Index");
             }
 
+            // SI HAY ERROR EN EL ENVÍO DEL CORREO, MUESTRA MENSAJE PERO PERMITE PROGRESO
+            ModelState.AddModelError("", "Se ha creado la orden, pero ha ocurrido un error al notificar por email al jefe correspondiente.");
+            return View(crearOrdenViewModel);
         }
 
 
