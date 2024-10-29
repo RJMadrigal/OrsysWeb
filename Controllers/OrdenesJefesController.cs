@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using SistemaOrdenes.Models;
 using SistemaOrdenes.Services;
+using SistemaOrdenes.Services.Interfaces;
+using System.Reflection.Metadata.Ecma335;
 
 namespace SistemaOrdenes.Controllers
 {
@@ -10,11 +12,13 @@ namespace SistemaOrdenes.Controllers
 
         private readonly UsuarioService servicioUsuario;
         private readonly IRepositorioOrdenes repositorioOrdenes;
+        private readonly IEmailService emailService;
 
-        public OrdenesJefesController(UsuarioService servicioUsuario, IRepositorioOrdenes repositorioOrdenes) {
+        public OrdenesJefesController(UsuarioService servicioUsuario, IRepositorioOrdenes repositorioOrdenes, IEmailService emailService) {
 
             this.servicioUsuario = servicioUsuario;
             this.repositorioOrdenes = repositorioOrdenes;
+            this.emailService = emailService;   
 
         }
 
@@ -67,6 +71,15 @@ namespace SistemaOrdenes.Controllers
                 return View();
             }
 
+            var usuarioComprador = await servicioUsuario.ObtenerDatosUserOrden(idOrden);
+            // Enviar email de notificacion de estado
+            if(usuarioComprador == null)
+            {
+                return NotFound();
+            }
+
+
+            var email = await emailService.EnviarNotificacionEstadoJefe(usuarioComprador.Correo, usuarioComprador.Nombre, idOrden);
 
             return RedirectToAction("Index");
         }

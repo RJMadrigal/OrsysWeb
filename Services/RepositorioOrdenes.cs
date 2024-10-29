@@ -1,12 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using SistemaOrdenes.Models;
+using System.Data;
 
 namespace SistemaOrdenes.Services
 {
 
     public interface IRepositorioOrdenes
     {
-        Task<bool> CrearOrden(CrearOrdenViewModel modelo);
+        Task<int?> CrearOrden(CrearOrdenViewModel modelo);
         Task<bool> EditarOrdenJefe(int idOrden, string estado, string comentarios, int idJefe);
         Task<List<OrdenesViewModel>> ObtenerOrdenesComprador(int idUsuario);
         Task<List<OrdenesViewModel>> ObtenerOrdenesJefe(int idUsuarioJefe);
@@ -29,25 +31,39 @@ namespace SistemaOrdenes.Services
 
 
         //CREA LA ORDEN MEDIANTE UN PROCEDIMIENTO ALMACENADO
-        public async Task<bool> CrearOrden(CrearOrdenViewModel modelo)
+        public async Task<int?> CrearOrden(CrearOrdenViewModel modelo)
         {
-            //TRY PARA EL MANEJO DE ERRORES EN LA BASE DE DATOS
             try
             {
+                // Define un parámetro de salida para capturar el ID de la orden
+                var idOrdenParam = new SqlParameter("@IdOrden", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output
+                };
+
+                // Ejecuta el procedimiento almacenado
                 await context.Database.ExecuteSqlInterpolatedAsync($@"
-                            EXEC sp_CrearOrden
-                                    @Nombre_Articulo = {modelo.NombreArticulo},
-                                    @Modelo = {modelo.Modelo},
-                                    @Precio = {modelo.Precio},
-                                    @Cantidad = {modelo.Cantidad},
-                                    @Detalles = {modelo.Detalles},
-                                    @ID_UsuarioComprador = {modelo.idUsuario}");
-                return true;
-            }catch(Exception ex)
+            EXEC sp_CrearOrden
+                @Nombre_Articulo = {modelo.NombreArticulo},
+                @Modelo = {modelo.Modelo},
+                @Precio = {modelo.Precio},
+                @Cantidad = {modelo.Cantidad},
+                @Detalles = {modelo.Detalles},
+                @ID_UsuarioComprador = {modelo.idUsuario},
+                @IdOrden = {idOrdenParam} OUTPUT");
+
+                // Retorna el ID de la orden
+                return (int?)idOrdenParam.Value;  // Devuelve el ID de la orden
+            }
+            catch (Exception)
             {
-                return false;
+                // Maneja errores y devuelve null en caso de error
+                return null;
             }
         }
+
+
+
 
 
         //ACTUALIZA EL ESTADO DE LA ORDEN MEDIANTE UN PROCEDIMIENTO ALMACENADO
