@@ -14,6 +14,7 @@ namespace SistemaOrdenes.Services
         Task<List<OrdenesViewModel>> ObtenerOrdenesJefe(int idUsuarioJefe);
         Task<InfoOrdenViewModel> ObtenerOrdenPorId(int id, string NombreJefe, string NombreJefeFinanciero);
         Task<InfoOrdenViewModel> ObtenerOrdenPorId(int idOrden);
+        Task<List<OrdenesViewModel>> ObtenerTodasOrdenesJefes(int idUsuarioJefe);
     }
 
 
@@ -88,8 +89,6 @@ namespace SistemaOrdenes.Services
 
 
 
-
-
         //OBTIENE LA LISTA DE ORDENES DEL USUARIO COMPRADOR
         public async Task<List<OrdenesViewModel>> ObtenerOrdenesComprador(int idUsuario)
         {
@@ -111,7 +110,7 @@ namespace SistemaOrdenes.Services
 
 
 
-        //OBTIENE LA LISTA DE ORDENES DEL USUARIO JEFE
+        //OBTIENE LA LISTA DE ORDENES PENDIENTES DEL USUARIO JEFE
         public async Task<List<OrdenesViewModel>> ObtenerOrdenesJefe(int idUsuarioJefe)
         {
 
@@ -134,6 +133,28 @@ namespace SistemaOrdenes.Services
 
 
 
+        //OBTIENE LA LISTA DE ORDENES PENDIENTES DEL USUARIO JEFE
+        public async Task<List<OrdenesViewModel>> ObtenerTodasOrdenesJefes(int idUsuarioJefe)
+        {
+
+            //SELECCIONA LA LISTA DE ORDENES POR ID
+            var ordenes = await context.TbOrdens
+            .Include(o => o.IdUsuarioCompradorNavigation)
+            .Include(o => o.TbHistorials)
+            .Where(x => x.TbHistorials.Any(h => h.IdUsuario == idUsuarioJefe))
+            .Select(x => new OrdenesViewModel
+            {
+                IdOrden = x.IdOrden,
+                NombreArticulo = x.NombreArticulo,
+                Modelo = x.Modelo,
+                FechaCreacion = x.FechaCreacion,
+                Estado = x.Estado,
+                Solicitante = x.IdUsuarioCompradorNavigation.Nombre
+            }).ToListAsync();
+
+            return ordenes;
+        }
+
 
         //OBTENER LA ORDEN POR ID
         public async Task<InfoOrdenViewModel> ObtenerOrdenPorId(int id, string NombreJefe, string NombreJefeFinanciero)
@@ -148,7 +169,8 @@ namespace SistemaOrdenes.Services
                     Total = x.Total,
                     Estado = x.Estado,
                     JefeAprobador = NombreJefe,
-                    JefeFinanciero = NombreJefeFinanciero
+                    JefeFinanciero = NombreJefeFinanciero,
+                    Comentarios = x.TbHistorials.OrderByDescending(h => h.IdHistorial).Select(h => h.Comentarios).FirstOrDefault()
                 }).FirstOrDefaultAsync();
         }
 
@@ -168,5 +190,9 @@ namespace SistemaOrdenes.Services
                     Solicitante = x.IdUsuarioCompradorNavigation.Nombre
                 }).FirstOrDefaultAsync();
         }
+
+
+
+       
     }
 }

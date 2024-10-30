@@ -1,0 +1,133 @@
+﻿@model IEnumerable<OrdenesViewModel>
+
+
+@{
+    ViewData["Tittle"] = "Lista de ordenes";
+}
+
+<style>
+
+    table.table-dark {
+        background-color: #333;
+        border-radius: 10px; /* Redondear los bordes de la tabla */
+        overflow: hidden; /* Asegura que el contenido no se salga de los bordes redondeados */
+    }
+
+
+        table.table-dark th,
+        table.table-dark td {
+            border: none; /* Elimina los bordes de las celdas para que no afecten el borde redondeado */
+        }
+
+    .btn-nuevo {
+        background-color: grey; /* Color de fondo del botón */
+        color: white; /* Color del texto */
+        border: none; /* Sin borde */
+        border-radius: 5px; /* Bordes redondeados */
+        padding: 10px 20px; /* Espaciado interno */
+        transition: background-color 0.3s; /* Transición suave para el color de fondo */
+    }
+
+        .btn-nuevo:hover {
+            background-color: lightslategrey; /* Cambia el color a un gris más claro (o el color que desees) */
+        }
+
+    .icono-accionEliminar {
+        color: red; /* Cambia el color de los íconos */
+        transition: color 0.3s; /* Transición suave para el color */
+    }
+
+    .icono-accionEditar {
+        color: lightgreen;
+        transition: color 0.3s; /* Transición suave para el color */
+    }
+
+        .icono-accionEditar:hover {
+            color: forestgreen; /* Cambia el color al pasar el mouse (puedes personalizarlo) */
+        }
+
+    .icono-accionEliminar:hover {
+        color: darkred; /* Cambia el color al pasar el mouse (puedes personalizarlo) */
+    }
+
+
+    .search-input::placeholder {
+        color: #bbb; /* Cambia el color del texto del placeholder */
+    }
+
+
+    .search-input {
+        background-color: #444; /* Cambia el color de fondo de la barra de búsqueda */
+        color: white; /* Cambia el color del texto */
+        border: 1px solid #666; /* Cambia el color del borde */
+        border-radius: 5px; /* Redondear bordes de la barra de búsqueda */
+    }
+
+
+        .search-input:focus {
+            background-color: #555; /* Color de fondo cuando está en foco */
+            border-color: #888; /* Cambiar el color del borde cuando está en foco */
+            outline: none; /* Quitar el borde azul predeterminado */
+            color: white;
+        }
+
+</style>
+
+
+
+
+<div class="container">
+    <h1>Ordenes</h1>
+
+    <hr />
+
+    <div class="d-flex justify-content-between mb-3">
+        <input type="text" class="form-control search-input" placeholder="Buscar" style="width: 300px;">
+    </div>
+
+    <table class="table table-dark table-hover">
+        <thead>
+            <tr>
+                <th>#Orden</th>
+                <th>Nombre del artículo</th>
+                <th>Modelo</th>
+                <th>Fecha de solicitud</th>
+                <th>Total</th>
+                <th>Solicitante</th>
+                <th>Acción</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var modelo in Model)
+            {
+                <tr>
+                    <td>@modelo.IdOrden</td>
+                    <td>@modelo.NombreArticulo</td>
+                    <td>@modelo.Modelo</td>
+                    <td>@modelo.FechaCreacion</td>
+                    <td>@modelo.Total</td>
+                    <td>@modelo.Solicitante</td>
+                    <td>
+                        <a asp-action="Revisar" asp-route-id="@modelo.IdOrden" style="color: blue">Revisar</a>
+                    </td>
+                    <td>
+                        @if (modelo.Estado == "Aprobada")
+                        {
+                            <span class="text-success">@modelo.Estado</span>
+                        }
+                        else if (modelo.Estado == "Rechazada")
+                        {
+                            <span class="text-danger">@modelo.Estado</span>
+                        }
+                        else if (modelo.Estado == "Pendiente" || modelo.Estado == "Aprobado por jefe")
+                        {
+                            <span class="text-warning">@modelo.Estado</span>
+                        }
+                    </td>
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+</div>

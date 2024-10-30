@@ -37,7 +37,13 @@
 
   <ItemGroup>
     <Folder Include="Views\Historial\" />
-    <Folder Include="Views\OrdenesFinancieros\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\OrdenesJefes\VerOrdenEspecifica.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

@@ -24,5 +24,7 @@
 
         public string Detalles { get; set; }
 
+        public string Comentarios { get; set; }
+
     }
 }

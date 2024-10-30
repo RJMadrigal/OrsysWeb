@@ -237,7 +237,7 @@ namespace SistemaOrdenes.Services
 
 
         //OBTIENE EL NOMBRE DEL JEFE DEL USUARIO x ID
-        public async Task<string> ObtenerNombreJefe(int id)
+        public async Task<string> ObtenerNombreUsuario(int id)
         {
             var NombreJefe = await context.TbUsuarios.Where(x => x.IdUsuario == id).Select(x => x.Nombre).FirstOrDefaultAsync();
 
