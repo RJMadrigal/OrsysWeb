@@ -48,7 +48,7 @@ namespace SistemaOrdenes.Controllers
             }
 
             //SE OBTIENE EL NOMBRE DEL JEFE
-            var NombreJefe = await servicioUsuario.ObtenerNombreJefe(idJefe);
+            var NombreJefe = await servicioUsuario.ObtenerNombreUsuario(idJefe);
 
             if (NombreJefe == null)
             {

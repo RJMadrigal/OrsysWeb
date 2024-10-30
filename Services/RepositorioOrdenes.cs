@@ -10,10 +10,13 @@ namespace SistemaOrdenes.Services
     {
         Task<int?> CrearOrden(CrearOrdenViewModel modelo);
         Task<bool> EditarOrdenJefe(int idOrden, string estado, string comentarios, int idJefe);
+        Task<bool> EditarOrdenJefeFinanciero(int idOrden, string estado, string comentarios, int idJefe);
         Task<List<OrdenesViewModel>> ObtenerOrdenesComprador(int idUsuario);
         Task<List<OrdenesViewModel>> ObtenerOrdenesJefe(int idUsuarioJefe);
+        Task<List<OrdenesViewModel>> ObtenerOrdenesJefeFinanciero(int idUsuarioJefe);
         Task<InfoOrdenViewModel> ObtenerOrdenPorId(int id, string NombreJefe, string NombreJefeFinanciero);
         Task<InfoOrdenViewModel> ObtenerOrdenPorId(int idOrden);
+        Task<List<OrdenesViewModel>> ObtenerTodasOrdenesJefes(int idUsuarioJefe);
     }
 
 
@@ -66,7 +69,7 @@ namespace SistemaOrdenes.Services
 
 
 
-        //ACTUALIZA EL ESTADO DE LA ORDEN MEDIANTE UN PROCEDIMIENTO ALMACENADO
+        //ACTUALIZA EL ESTADO DE LA ORDEN EL JEFE DEL EMPLEADO MEDIANTE UN PROCEDIMIENTO ALMACENADO
         public async Task<bool> EditarOrdenJefe(int idOrden, string estado, string comentarios, int idJefe)
         {
             //TRY PARA EL MANEJO DE ERRORES EN LA BASE DE DATOS
@@ -87,6 +90,25 @@ namespace SistemaOrdenes.Services
         }
 
 
+        //ACTUALIZA EL ESTADO DE LA ORDEN EL JEFE APROBADOR MEDIANTE UN PROCEDIMIENTO ALMACENADO
+        public async Task<bool> EditarOrdenJefeFinanciero(int idOrden, string estado, string comentarios, int idJefe)
+        {
+            //TRY PARA EL MANEJO DE ERRORES EN LA BASE DE DATOS
+            try
+            {
+                await context.Database.ExecuteSqlInterpolatedAsync($@"
+                            EXEC sp_EstadoOrdenJefeFinanciero
+                                    @ID_Orden = {idOrden},
+                                    @ID_JEFE = {idJefe},
+                                    @Estado = {estado},
+                                    @Comentarios = {comentarios}");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
 
 
 
@@ -111,7 +133,7 @@ namespace SistemaOrdenes.Services
 
 
 
-        //OBTIENE LA LISTA DE ORDENES DEL USUARIO JEFE
+        //OBTIENE LA LISTA DE ORDENES PENDIENTES DEL USUARIO JEFE
         public async Task<List<OrdenesViewModel>> ObtenerOrdenesJefe(int idUsuarioJefe)
         {
 
@@ -132,7 +154,54 @@ namespace SistemaOrdenes.Services
             return ordenes;
         }
 
+        //OBTIENE LA LISTA DE ORDENES PENDIENTES DEL USUARIO JEFE APROBADOR
+        public async Task<List<OrdenesViewModel>> ObtenerOrdenesJefeFinanciero(int idUsuarioJefe)
+        {
 
+            //SELECCIONA LA LISTA DE ORDENES POR ID
+            var ordenes = await context.TbOrdens
+                .Include(o => o.TbHistorials) // Incluye la relación con TbHistorial
+                .Where(o => o.TbHistorials.Any(h => h.IdUsuario == idUsuarioJefe && h.Estado == "Pendiente aprobacion"))
+                .Select(o => new OrdenesViewModel
+                {
+                    IdOrden = o.IdOrden,
+                    NombreArticulo = o.NombreArticulo,
+                    Modelo = o.Modelo,
+                    FechaCreacion = o.FechaCreacion,
+                    Solicitante = o.IdUsuarioCompradorNavigation.Nombre,
+                    Total = o.Total,
+                    Estado = o.TbHistorials
+                        .Where(h => h.IdUsuario == idUsuarioJefe && h.Estado == "Pendiente aprobacion")
+                        .Select(h => h.Estado)
+                        .FirstOrDefault() // Selecciona el estado pendiente de aprobación del historial de usuario 31
+                }).ToListAsync();
+
+            return ordenes;
+        }
+
+
+
+        //OBTIENE LA LISTA DE ORDENES PENDIENTES DEL USUARIO JEFE
+        public async Task<List<OrdenesViewModel>> ObtenerTodasOrdenesJefes(int idUsuarioJefe)
+        {
+
+            //SELECCIONA LA LISTA DE ORDENES POR ID
+            var ordenes = await context.TbOrdens
+            .Include(o => o.IdUsuarioCompradorNavigation)
+            .Include(o => o.TbHistorials)
+            .Where(x => x.TbHistorials.Any(h => h.IdUsuario == idUsuarioJefe))
+            .Select(x => new OrdenesViewModel
+            {
+                IdOrden = x.IdOrden,
+                NombreArticulo = x.NombreArticulo,
+                Modelo = x.Modelo,
+                FechaCreacion = x.FechaCreacion,
+                Estado = x.Estado,
+                Solicitante = x.IdUsuarioCompradorNavigation.Nombre
+            }).ToListAsync();
+
+            return ordenes;
+        }
 
 
         //OBTENER LA ORDEN POR ID
@@ -148,7 +217,8 @@ namespace SistemaOrdenes.Services
                     Total = x.Total,
                     Estado = x.Estado,
                     JefeAprobador = NombreJefe,
-                    JefeFinanciero = NombreJefeFinanciero
+                    JefeFinanciero = NombreJefeFinanciero,
+                    Comentarios = x.TbHistorials.OrderByDescending(h => h.IdHistorial).Select(h => h.Comentarios).FirstOrDefault()
                 }).FirstOrDefaultAsync();
         }
 
@@ -168,5 +238,9 @@ namespace SistemaOrdenes.Services
                     Solicitante = x.IdUsuarioCompradorNavigation.Nombre
                 }).FirstOrDefaultAsync();
         }
+
+
+
+       
     }
 }

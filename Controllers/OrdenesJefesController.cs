@@ -25,7 +25,7 @@ namespace SistemaOrdenes.Controllers
 
 
 
-        [Authorize(Roles = "Jefe, Jefe aprobador 1, Jefe aprobador 2, Jefe aprobador 3")]
+        [Authorize(Roles = "Jefe")]
         public async Task<IActionResult> Index()
         {
 
@@ -44,7 +44,7 @@ namespace SistemaOrdenes.Controllers
 
        
         //REVISA UNA ORDEN EN ESPECIFICA
-        [Authorize(Roles = "Jefe, Jefe aprobador 1, Jefe aprobador 2, Jefe aprobador 3")]
+        [Authorize(Roles = "Jefe")]
         public async Task<IActionResult> Revisar(int id)
         {
             int usuarioid = servicioUsuario.ObtenerUsuarioId();
@@ -89,10 +89,58 @@ namespace SistemaOrdenes.Controllers
 
 
         //NO TIENE FUNCIONALIDAD POR EL MOMENTO
-        [Authorize(Roles = "Jefe, Jefe aprobador 1, Jefe aprobador 2, Jefe aprobador 3")]
-        public IActionResult Reportes()
+        [Authorize(Roles = "Jefe")]
+        public async Task<IActionResult> Reportes()
         {
-            return View();
+            //SE OBTIENE EL ID DEL USUARIO LOGEADO
+            int usuarioId = servicioUsuario.ObtenerUsuarioId();
+
+            //OBTIENE LA LISTA DE ORDENES DEL USUARIO JEFE
+            var listaOrdenes = await repositorioOrdenes.ObtenerTodasOrdenesJefes(usuarioId);
+
+            //ENVIA LA LISTA DE ORDENES
+            return View(listaOrdenes);
         }
+
+
+
+
+        [Authorize(Roles = "Jefe")]
+        public async Task<IActionResult> VerOrdenEspecifica(int id)
+        {
+            //SE OBTIENE EL ID DEL USUARIO
+            int idUsuario = servicioUsuario.ObtenerUsuarioId();
+
+            if (idUsuario == null)
+            {
+                return NotFound();
+            }
+
+            //SE OBTIENE EL NOMBRE DEL USUARIO
+            var NombreJefe = await servicioUsuario.ObtenerNombreUsuario(idUsuario);
+
+            if (NombreJefe == null)
+            {
+                return NotFound();
+            }
+
+            //OBTIENE EL NOMBRE DEL JEFE FINANCIERO DE LA ORDEN
+            var nombreJefeFinanciero = await servicioUsuario.ObtenerJefeFinanciero(id);
+
+
+            //SE OBTIENE LA ORDEN POR ID Y SE ENVIA EL NOMBRE DEL JEFE APROBADOR
+            var orden = await repositorioOrdenes.ObtenerOrdenPorId(id, NombreJefe, nombreJefeFinanciero);
+
+            if (orden == null)
+            {
+                return NotFound();
+            }
+
+            return View(orden);
+        }
+
+
+
+
     }
 }

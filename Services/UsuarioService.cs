@@ -179,6 +179,8 @@ namespace SistemaOrdenes.Services
             return usuario;
         }
 
+
+        //OBTIENE LOS DATOS DEL JEFE DEL USUARIO
         public async Task<TbUsuario> ObtenerDatosJefe()
         {
             if (httpContext.User.Identity.IsAuthenticated)
@@ -211,7 +213,7 @@ namespace SistemaOrdenes.Services
 
 
 
-        //OBTIENE EL ID DEL JEFE DEL USUARIO
+        //OBTIENE EL ID DEL JEFE DEL USUARIO LOGUEADO
         public async Task<int> ObtenerIdJefe()
         {
 
@@ -237,7 +239,7 @@ namespace SistemaOrdenes.Services
 
 
         //OBTIENE EL NOMBRE DEL JEFE DEL USUARIO x ID
-        public async Task<string> ObtenerNombreJefe(int id)
+        public async Task<string> ObtenerNombreUsuario(int id)
         {
             var NombreJefe = await context.TbUsuarios.Where(x => x.IdUsuario == id).Select(x => x.Nombre).FirstOrDefaultAsync();
 
@@ -246,7 +248,7 @@ namespace SistemaOrdenes.Services
 
 
 
-        //OBTENER EL NOMBRE DEL JEFE FINANCIERO
+        //OBTENER EL NOMBRE DEL JEFE FINANCIERO POR ID DE LA ORDEN
         public async Task<string> ObtenerJefeFinanciero(int idOrden)
         {
             var NombreJefeFinanciero = await context.TbHistorials
@@ -256,7 +258,15 @@ namespace SistemaOrdenes.Services
             return NombreJefeFinanciero;
         }
 
-       
 
+        //OBTIENE EL NOMBRE DEL JEFE DEL USUARIO QUE APROBÓ LA ORDEN
+        public async Task<string> ObtenerNombreUsuarioAprobador(int idOrden)
+        {
+            //BUSCA EL NOMBRE DEL JEFE QUE APROBÓ RECHAZO LA ORDEN
+            var NombreJefeFinanciero = await context.TbOrdens.Where(x => x.IdOrden == idOrden)
+                .Select(x => x.IdUsuarioCompradorNavigation.IdJefeNavigation.Nombre).FirstOrDefaultAsync();
+
+            return NombreJefeFinanciero;
+        }
     }
 }
