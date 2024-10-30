@@ -25,7 +25,7 @@ namespace SistemaOrdenes.Controllers
 
 
 
-        [Authorize(Roles = "Jefe, Jefe aprobador 1, Jefe aprobador 2, Jefe aprobador 3")]
+        [Authorize(Roles = "Jefe")]
         public async Task<IActionResult> Index()
         {
 
@@ -44,7 +44,7 @@ namespace SistemaOrdenes.Controllers
 
        
         //REVISA UNA ORDEN EN ESPECIFICA
-        [Authorize(Roles = "Jefe, Jefe aprobador 1, Jefe aprobador 2, Jefe aprobador 3")]
+        [Authorize(Roles = "Jefe")]
         public async Task<IActionResult> Revisar(int id)
         {
             int usuarioid = servicioUsuario.ObtenerUsuarioId();
@@ -89,7 +89,7 @@ namespace SistemaOrdenes.Controllers
 
 
         //NO TIENE FUNCIONALIDAD POR EL MOMENTO
-        [Authorize(Roles = "Jefe, Jefe aprobador 1, Jefe aprobador 2, Jefe aprobador 3")]
+        [Authorize(Roles = "Jefe")]
         public async Task<IActionResult> Reportes()
         {
             //SE OBTIENE EL ID DEL USUARIO LOGEADO
@@ -105,7 +105,7 @@ namespace SistemaOrdenes.Controllers
 
 
 
-        [Authorize(Roles = "Jefe, Jefe aprobador 1, Jefe aprobador 2, Jefe aprobador 3")]
+        [Authorize(Roles = "Jefe")]
         public async Task<IActionResult> VerOrdenEspecifica(int id)
         {
             //SE OBTIENE EL ID DEL USUARIO

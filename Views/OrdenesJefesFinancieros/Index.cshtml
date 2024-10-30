@@ -112,18 +112,8 @@
                         <a asp-action="Revisar" asp-route-id="@modelo.IdOrden" style="color: blue">Revisar</a>
                     </td>
                     <td>
-                        @if (modelo.Estado == "Aprobada")
-                        {
-                            <span class="text-success">@modelo.Estado</span>
-                        }
-                        else if (modelo.Estado == "Rechazada")
-                        {
-                            <span class="text-danger">@modelo.Estado</span>
-                        }
-                        else if (modelo.Estado == "Pendiente" || modelo.Estado == "Aprobado por jefe")
-                        {
-                            <span class="text-warning">@modelo.Estado</span>
-                        }
+                        
+                        <span class="text-warning">@modelo.Estado</span>
                     </td>
                 </tr>
             }
