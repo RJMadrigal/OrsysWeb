@@ -9,7 +9,7 @@ namespace SistemaOrdenes.Services
     public interface IRepositorioOrdenes
     {
         Task<int?> CrearOrden(CrearOrdenViewModel modelo);
-        Task<bool> EditarOrdenJefe(int idOrden, string estado, string comentarios, int idJefe);
+        Task<(bool success, int idJefeFinanciero)> EditarOrdenJefe(int idOrden, string estado, string comentarios, int idJefe);
         Task<bool> EditarOrdenJefeFinanciero(int idOrden, string estado, string comentarios, int idJefe);
         Task<List<OrdenesViewModel>> ObtenerOrdenesComprador(int idUsuario);
         Task<List<OrdenesViewModel>> ObtenerOrdenesJefe(int idUsuarioJefe);
@@ -70,22 +70,25 @@ namespace SistemaOrdenes.Services
 
 
         //ACTUALIZA EL ESTADO DE LA ORDEN EL JEFE DEL EMPLEADO MEDIANTE UN PROCEDIMIENTO ALMACENADO
-        public async Task<bool> EditarOrdenJefe(int idOrden, string estado, string comentarios, int idJefe)
+        public async Task<(bool success, int idJefeFinanciero)> EditarOrdenJefe(int idOrden, string estado, string comentarios, int idJefe)
         {
-            //TRY PARA EL MANEJO DE ERRORES EN LA BASE DE DATOS
             try
             {
-                await context.Database.ExecuteSqlInterpolatedAsync($@"
-                            EXEC sp_EstadoOrdenJefe
-                                    @ID_Orden = {idOrden},
-                                    @ID_JEFE = {idJefe},
-                                    @Estado = {estado},
-                                    @Comentarios = {comentarios}");
-                return true;
+                var paramIdJefeFinanciero = new SqlParameter("@idJefeFinanciero", SqlDbType.Int) { Direction = ParameterDirection.Output };
+
+                await context.Database.ExecuteSqlRawAsync(
+                    "EXEC sp_EstadoOrdenJefe @ID_Orden, @ID_JEFE, @Estado, @Comentarios, @idJefeFinanciero OUTPUT",
+                    new SqlParameter("@ID_Orden", idOrden),
+                    new SqlParameter("@ID_JEFE", idJefe),
+                    new SqlParameter("@Estado", estado),
+                    new SqlParameter("@Comentarios", comentarios),
+                    paramIdJefeFinanciero);
+
+                return (true, (int)paramIdJefeFinanciero.Value);
             }
-            catch (Exception ex)
+            catch
             {
-                return false;
+                return (false, 0);
             }
         }
 

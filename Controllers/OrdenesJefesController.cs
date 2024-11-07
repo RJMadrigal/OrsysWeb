@@ -58,32 +58,42 @@ namespace SistemaOrdenes.Controllers
 
 
         //ENVIA EL ESTADO DE LA ORDEN Y LOS COMENTARIOS
+        
         [HttpPost]
         public async Task<IActionResult> ActualizarOrden(int idOrden, string estado, string comentarios)
         {
             var idUsuario = servicioUsuario.ObtenerUsuarioId();
 
-            var enviado = await repositorioOrdenes.EditarOrdenJefe(idOrden, estado, comentarios, idUsuario);
+            // Llama a EditarOrdenJefe y recibe el éxito y el id del jefe financiero
+            var (enviado, idJefeFinanciero) = await repositorioOrdenes.EditarOrdenJefe(idOrden, estado, comentarios, idUsuario);
 
-            //SI NO SE ENVIA
+            // Verifica si la orden fue procesada correctamente
             if (!enviado)
             {
-                return View();
+                return View("Revisar"); // Retorna la vista actual si falla la actualización
             }
 
+            // Intenta obtener los datos del usuario comprador de la orden
             var usuarioComprador = await servicioUsuario.ObtenerDatosUserOrden(idOrden);
-            // Enviar email de notificacion de estado
-            if(usuarioComprador == null)
+            if (usuarioComprador == null)
             {
-                return NotFound();
+                return NotFound(); // Retorna NotFound si el comprador no existe
             }
 
+            // Envia notificación de estado al usuario comprador
+            await emailService.EnviarNotificacionEstadoJefe(usuarioComprador.Correo, usuarioComprador.Nombre, idOrden);
 
-            var email = await emailService.EnviarNotificacionEstadoJefe(usuarioComprador.Correo, usuarioComprador.Nombre, idOrden);
+            // Si la orden está aprobada y hay un jefe financiero asignado, envía notificación
+            if (estado == "Aprobada" && idJefeFinanciero != 0)
+            {
+               var jefeFinanciero = await servicioUsuario.ObtenerDatosUserPorID(idJefeFinanciero);
+
+                await emailService.EnviarNotificacionJefeFinanciero(jefeFinanciero.Correo, jefeFinanciero.Nombre, idOrden);
+               
+            }
 
             return RedirectToAction("Index");
         }
-
 
 
 
