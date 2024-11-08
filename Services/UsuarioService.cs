@@ -148,25 +148,101 @@ namespace SistemaOrdenes.Services
 
         }
 
-
-        public async Task<string> ObtenerCorreoJefe()
+        public async Task<TbUsuario> ObtenerDatosUserOrden(int id)
         {
+            int IdComprador = await context.TbOrdens
+                .Where(x => x.IdOrden == id)
+                .Select(x => x.IdUsuarioComprador)
+                .FirstOrDefaultAsync();
+
+            if (IdComprador == 0)
+                throw new Exception("No se encontró el usuario comprador actual.");
+
+            var usuarioComprador = await context.TbUsuarios
+                .Where(u => u.IdUsuario == IdComprador)
+                .FirstOrDefaultAsync();
+
+            return usuarioComprador;
+        }
+
+        public async Task<TbUsuario> ObtenerDatosUser()
+        {
+            int id = ObtenerUsuarioId();
+
+            var usuario = await context.TbUsuarios
+                .Where(x => x.IdUsuario == id)
+                .FirstOrDefaultAsync();
+
+            if (usuario == null)
+                throw new Exception("No se encontró el usuario actual.");
+
+            return usuario;
+        }
+
+        public async Task<TbUsuario> ObtenerDatosUserPorID(int id)
+        {
+
+            var usuario = await context.TbUsuarios
+                .Where(x => x.IdUsuario == id)
+                .FirstOrDefaultAsync();
+
+            if (usuario == null)
+                throw new Exception("No se encontró el usuario actual.");
+
+            return usuario;
+        }
+
+
+
+
+        //OBTIENE LOS DATOS DEL JEFE DEL USUARIO
+        public async Task<TbUsuario> ObtenerDatosJefe()
+        {
+            if (httpContext.User.Identity.IsAuthenticated)
+            {
+                var idClaim = httpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+                if (idClaim == null)
+                    throw new Exception("No se encontró el identificador de usuario en los reclamos.");
+
+                var id = int.Parse(idClaim.Value);
+
+                // OBTIENE TODOS LOS DATOS DEL USUARIO JEFE
+                var jefe = await context.TbUsuarios
+                    .Where(u => u.IdUsuario == id)
+                    .Select(u => u.IdJefe)
+                    .Join(context.TbUsuarios, idJefe => idJefe,
+                          jefeUsuario => jefeUsuario.IdUsuario,
+                          (idJefe, jefeUsuario) => jefeUsuario)
+                    .FirstOrDefaultAsync();
+
+                if (jefe == null)
+                    throw new Exception("No se encontró el jefe para el usuario actual.");
+
+                return jefe;
+            }
+            else
+            {
+                throw new Exception("El usuario no está autenticado");
+            }
+        }
+
+
+
+        //OBTIENE EL ID DEL JEFE DEL USUARIO LOGUEADO
+        public async Task<int> ObtenerIdJefe()
+        {
+
             if (httpContext.User.Identity.IsAuthenticated)
             {
                 var idClaim = httpContext.User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault();
                 var id = int.Parse(idClaim.Value);
 
-                //OBTIENE EL CORREO DEL USUARIO JEFE
-                var correo = await context.TbUsuarios
-                    .Where(u => u.IdUsuario == id)
-                    .Select(u => u.IdJefe)
-                    .Join(context.TbUsuarios, idJefe => idJefe,
-                         jefe => jefe.IdUsuario,
-                         (idJefe, jefe) => jefe.Correo)
-                    .FirstOrDefaultAsync();
+                //OBTIENE EL ID DEL USUARIO JEFE
+                var idJefe = await context.TbUsuarios.Where(x => x.IdUsuario == id).Select(x => x.IdJefe).FirstOrDefaultAsync();
+
 
                 //RETORNA EL CORREO
-                return correo;
+                return int.Parse(idJefe.ToString());
 
             }
             else
@@ -175,5 +251,37 @@ namespace SistemaOrdenes.Services
             }
         }
 
+
+
+        //OBTIENE EL NOMBRE DEL JEFE DEL USUARIO x ID
+        public async Task<string> ObtenerNombreUsuario(int id)
+        {
+            var NombreJefe = await context.TbUsuarios.Where(x => x.IdUsuario == id).Select(x => x.Nombre).FirstOrDefaultAsync();
+
+            return NombreJefe;
+        }
+
+
+
+        //OBTENER EL NOMBRE DEL JEFE FINANCIERO POR ID DE LA ORDEN
+        public async Task<string> ObtenerJefeFinanciero(int idOrden)
+        {
+            var NombreJefeFinanciero = await context.TbHistorials
+                .Where(x => x.IdOrden == idOrden && x.IdUsuarioNavigation.IdRolNavigation.NombreRol.StartsWith("Jefe aprob"))
+                .Select(h => h.IdUsuarioNavigation.Nombre).FirstOrDefaultAsync();
+
+            return NombreJefeFinanciero;
+        }
+
+
+        //OBTIENE EL NOMBRE DEL JEFE DEL USUARIO QUE APROBÓ LA ORDEN
+        public async Task<string> ObtenerNombreUsuarioAprobador(int idOrden)
+        {
+            //BUSCA EL NOMBRE DEL JEFE QUE APROBÓ RECHAZO LA ORDEN
+            var NombreJefeFinanciero = await context.TbOrdens.Where(x => x.IdOrden == idOrden)
+                .Select(x => x.IdUsuarioCompradorNavigation.IdJefeNavigation.Nombre).FirstOrDefaultAsync();
+
+            return NombreJefeFinanciero;
+        }
     }
 }

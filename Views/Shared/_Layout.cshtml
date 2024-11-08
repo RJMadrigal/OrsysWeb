@@ -81,7 +81,7 @@
                 <!-- VISTAS DE JEFE DE USUARIO & JEFE FINANCIERO -->
                 @if (User.IsInRole("Jefe aprobador 1") || User.IsInRole("Jefe aprobador 2") || User.IsInRole("Jefe aprobador 3"))
                 {
-                    <a asp-action="Index" asp-controller="OrdenesJefes" style="text-decoration: none">
+                    <a asp-action="Index" asp-controller="OrdenesJefesFinancieros" style="text-decoration: none">
                         <div class="menu-item">
                             <i class="fas fa-clipboard-list"></i>
                             <span>Ordenes</span>
@@ -89,7 +89,7 @@
                         </div>
                     </a>
 
-                    <a asp-action="Reportes" asp-controller="OrdenesJefes" style="text-decoration: none">
+                    <a asp-action="Reportes" asp-controller="OrdenesJefesFinancieros" style="text-decoration: none">
                         <div class="menu-item">
                             <i class="fas fa-chart-pie"></i>
                             <span>Reportes</span>

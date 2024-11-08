@@ -1,10 +1,9 @@
-﻿
-@model IEnumerable<OrdenesViewModel>
+﻿@model IEnumerable<OrdenesViewModel>
+
 
 @{
-    ViewData["tittle"] = "Lista de ordenes";
+    ViewData["Tittle"] = "Lista de ordenes";
 }
-
 
 <style>
 
@@ -29,9 +28,9 @@
         transition: background-color 0.3s; /* Transición suave para el color de fondo */
     }
 
-    .btn-nuevo:hover {
-        background-color: lightslategrey; /* Cambia el color a un gris más claro (o el color que desees) */
-    }
+        .btn-nuevo:hover {
+            background-color: lightslategrey; /* Cambia el color a un gris más claro (o el color que desees) */
+        }
 
     .icono-accionEliminar {
         color: red; /* Cambia el color de los íconos */
@@ -43,9 +42,9 @@
         transition: color 0.3s; /* Transición suave para el color */
     }
 
-    .icono-accionEditar:hover {
-        color: forestgreen; /* Cambia el color al pasar el mouse (puedes personalizarlo) */
-    }
+        .icono-accionEditar:hover {
+            color: forestgreen; /* Cambia el color al pasar el mouse (puedes personalizarlo) */
+        }
 
     .icono-accionEliminar:hover {
         color: darkred; /* Cambia el color al pasar el mouse (puedes personalizarlo) */
@@ -65,14 +64,12 @@
     }
 
 
-    .search-input:focus {
-        background-color: #555; /* Color de fondo cuando está en foco */
-        border-color: #888; /* Cambiar el color del borde cuando está en foco */
-        outline: none; /* Quitar el borde azul predeterminado */
-        color: white;
-    }
-
-
+        .search-input:focus {
+            background-color: #555; /* Color de fondo cuando está en foco */
+            border-color: #888; /* Cambiar el color del borde cuando está en foco */
+            outline: none; /* Quitar el borde azul predeterminado */
+            color: white;
+        }
 
 </style>
 
@@ -80,9 +77,8 @@
 
 
 <div class="container">
-    <h1>Lista de ordenes creadas</h1>
+    <h1>Ordenes</h1>
 
-    
     <hr />
 
     <div class="d-flex justify-content-between mb-3">
@@ -93,37 +89,35 @@
         <thead>
             <tr>
                 <th>#Orden</th>
-                <th>Nombre</th>
+                <th>Nombre del artículo</th>
                 <th>Modelo</th>
                 <th>Fecha de solicitud</th>
-                <th>Monto</th>
+                <th>Total</th>
+                <th>Solicitante</th>
+                <th>Acción</th>
                 <th>Estado</th>
             </tr>
         </thead>
         <tbody>
-            @foreach(var ordenes in Model)
+            @foreach(var modelo in Model)
             {
                 <tr>
-                    <td>@ordenes.IdOrden</td>
-                    <td>@ordenes.NombreArticulo</td>
-                    <td>@ordenes.Modelo</td>
-                    <td>@ordenes.FechaCreacion</td>
-                    <td>@ordenes.Total</td>
+                    <td>@modelo.IdOrden</td>
+                    <td>@modelo.NombreArticulo</td>
+                    <td>@modelo.Modelo</td>
+                    <td>@modelo.FechaCreacion</td>
+                    <td>@modelo.Total</td>
+                    <td>@modelo.Solicitante</td>
                     <td>
-                        @if(ordenes.Estado == "Aprobada")
-                        {
-                            <span class="text-success">@ordenes.Estado</span>
-                        }else if (ordenes.Estado == "Rechazada" || ordenes.Estado == "Rechazado por jefe")
-                        {
-                            <span class="text-danger">@ordenes.Estado</span>
-                        }else if (ordenes.Estado == "Pendiente" || ordenes.Estado == "Aprobado por jefe"){
-                            <span class="text-warning">@ordenes.Estado</span>
-                        }
+                        <a asp-action="Revisar" asp-route-id="@modelo.IdOrden" style="color: blue">Revisar</a>
+                    </td>
+                    <td>
+                        
+                        <span class="text-warning">@modelo.Estado</span>
                     </td>
                 </tr>
             }
+            
         </tbody>
     </table>
 </div>
-
-

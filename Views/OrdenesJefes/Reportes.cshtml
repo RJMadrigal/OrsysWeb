@@ -1,4 +1,6 @@
 ﻿
+@model IEnumerable<OrdenesViewModel>
+
 @{
     ViewData["tittle"] = "Reportes de ordenes";
 }
@@ -74,6 +76,9 @@
         <thead>
             <tr>
                 <th>#Orden</th>
+                <th>Nombre</th>
+                <th>Modelo</th>
+                <th>Solicitante</th>
                 <th>Fecha de solicitud</th>
                 <th>Accion</th>
                 <th>Estado</th>
@@ -82,22 +87,43 @@
         </thead>
         <tbody>
 
-            <tr>
-                <td>1</td>
-                <td>8-10-2024</td>
-                <td>
-                    <a href="#" style="text-decoration:auto; color: blue">Ver</a>
-                </td>
-                <td>
-                    <span class="text-success">Aprobado</span>
-                </td>
+            @foreach (var modelo in Model)
+            {
+                <tr>
+                    <td>@modelo.IdOrden</td>
+                    <td>@modelo.NombreArticulo</td>
+                    <td>@modelo.Modelo</td>
+                    <td>@modelo.Solicitante</td>
+                    <td>@modelo.FechaCreacion</td>
+                    <td>
+                        <a asp-action="VerOrdenEspecifica" asp-route-id="@modelo.IdOrden" style="text-decoration:auto; color: blue">Ver</a>
+                    </td>
 
+                    <td>
+                        @if (modelo.Estado == "Aprobada")
+                        {
+                            <span class="text-success">@modelo.Estado</span>
+                        }
+                        else if (modelo.Estado == "Rechazado por jefe")
+                        {
+                            <span class="text-danger">Rechazado por ti</span>
+                        }
+                        else if (modelo.Estado == "Rechazada")
+                        {
+                            <span class="text-danger">@modelo.Estado</span>
+                        }
+                        else if (modelo.Estado == "Aprobado por jefe")
+                        {
+                            <span class="text-warning">Pendiente de aprobación financiero</span>
+                        }
+                    </td>
 
-                <td>
-                    <i class="fas fa-external-link-alt icono-accionExportar"></i>
-                    <input type="checkbox">
-                </td>
-            </tr>
+                    <td>
+                        <i class="fas fa-external-link-alt icono-accionExportar"></i>
+                        <input type="checkbox">
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>
