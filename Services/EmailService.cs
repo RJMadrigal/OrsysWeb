@@ -221,6 +221,126 @@ namespace SistemaOrdenes.Services
             }
         }
 
+        public async Task<bool> EnviarNotificacionFinalUsuario(string Correo, string Nombre, int IdOrden)
+        {
+            try
+            {
+                // Obtener HttpContext actual
+                var request = _httpContextAccessor.HttpContext.Request;
+
+                // Leer la plantilla HTML desde la carpeta Services/Templates
+                string path = System.IO.Path.Combine(_env.ContentRootPath, "Services", "Templates", "NotificacionFinalUsuario.html");
+                string content = await System.IO.File.ReadAllTextAsync(path);
+
+                // Crear la URL de confirmación
+                string url = $"{request.Scheme}://{request.Host}/OrdenesEmpleado/VerOrdenEspecifica?id={IdOrden}";
+
+
+                // Reemplazar valores en la plantilla HTML
+                string htmlBody = string.Format(content, Nombre, url);
+
+                System.Diagnostics.Debug.WriteLine("Correo: " + Correo);
+
+                // Configurar el objeto de correo
+                Email correodto = new Email()
+                {
+                    Para = Correo,
+                    Asunto = "Tu orden ha sido aprobada, ingresa para ver detalles.",
+                    Contenido = htmlBody
+                };
+
+                // Enviar el correo
+                bool enviado = await SendEmail(correodto);
+
+                return enviado;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error al enviar el correo de reset: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> EnviarNotificacionFinalUsuarioRechazo(string Correo, string Nombre, int IdOrden)
+        {
+            try
+            {
+                // Obtener HttpContext actual
+                var request = _httpContextAccessor.HttpContext.Request;
+
+                // Leer la plantilla HTML desde la carpeta Services/Templates
+                string path = System.IO.Path.Combine(_env.ContentRootPath, "Services", "Templates", "NoticacionFinalUsuarioRechazo.html");
+                string content = await System.IO.File.ReadAllTextAsync(path);
+
+                // Crear la URL de confirmación
+                string url = $"{request.Scheme}://{request.Host}/OrdenesEmpleado/VerOrdenEspecifica?id={IdOrden}";
+
+
+                // Reemplazar valores en la plantilla HTML
+                string htmlBody = string.Format(content, Nombre, url);
+
+                System.Diagnostics.Debug.WriteLine("Correo: " + Correo);
+
+                // Configurar el objeto de correo
+                Email correodto = new Email()
+                {
+                    Para = Correo,
+                    Asunto = "Tu orden ha sido rechazada, ingresa para ver detalles.",
+                    Contenido = htmlBody
+                };
+
+                // Enviar el correo
+                bool enviado = await SendEmail(correodto);
+
+                return enviado;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error al enviar el correo de reset: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> EnviarNotificacionJefeFinanciero(string Correo, string Nombre, int IdOrden)
+        {
+            try
+            {
+                // Obtener HttpContext actual
+                var request = _httpContextAccessor.HttpContext.Request;
+
+                // Leer la plantilla HTML desde la carpeta Services/Templates
+                string path = System.IO.Path.Combine(_env.ContentRootPath, "Services", "Templates", "NotificacionJefeFinanciero.html");
+                string content = await System.IO.File.ReadAllTextAsync(path);
+
+                // Crear la URL de confirmación
+                string url = $"{request.Scheme}://{request.Host}/OrdenesJefesFinancieros/Revisar?id={IdOrden}";
+
+
+                // Reemplazar valores en la plantilla HTML
+                string htmlBody = string.Format(content, Nombre, url);
+
+                System.Diagnostics.Debug.WriteLine("Correo: " + Correo);
+
+                // Configurar el objeto de correo
+                Email correodto = new Email()
+                {
+                    Para = Correo,
+                    Asunto = "Tienes una nueva orden o solicitud.",
+                    Contenido = htmlBody
+                };
+
+                // Enviar el correo
+                bool enviado = await SendEmail(correodto);
+
+                return enviado;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error al enviar el correo de reset: {ex.Message}");
+                return false;
+            }
+        }
+
 
 
     }

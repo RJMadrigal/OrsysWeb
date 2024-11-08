@@ -109,29 +109,42 @@ namespace SistemaOrdenes.Controllers
         [HttpPost]
         public async Task<IActionResult> ActualizarOrden(int idOrden, string estado, string comentarios)
         {
-            //SE OBTIENE EL ID DEL USUARIO
+            // SE OBTIENE EL ID DEL USUARIO
             var idUsuario = servicioUsuario.ObtenerUsuarioId();
 
-            //SE ACTUALIZA LA ORDEN
+            // SE ACTUALIZA LA ORDEN
             var enviado = await repositorioOrdenes.EditarOrdenJefeFinanciero(idOrden, estado, comentarios, idUsuario);
 
-            //SI NO SE ENVIA
+            // SI NO SE ENVIA
             if (!enviado)
             {
-                return View();
+                System.Console.WriteLine("No se pudo enviar la orden.");
+                return View("Revisar");
             }
 
             var usuarioComprador = await servicioUsuario.ObtenerDatosUserOrden(idOrden);
-            // Enviar email de notificacion de estado
+
+           System.Console.WriteLine($"Estado de la orden: {estado}");
             if (usuarioComprador == null)
             {
-                return NotFound();
+                System.Console.WriteLine("Usuario comprador es nulo.");
+                return RedirectToAction("Index");
             }
 
-
-            var email = await emailService.EnviarNotificacionEstadoJefe(usuarioComprador.Correo, usuarioComprador.Nombre, idOrden);
+            // Enviar email de notificación
+            if (estado == "Aprobada")
+            {
+                await emailService.EnviarNotificacionFinalUsuario(usuarioComprador.Correo, usuarioComprador.Nombre, idOrden);
+                System.Console.WriteLine("Correo de aprobación enviado.");
+            }
+            else
+            {
+                await emailService.EnviarNotificacionFinalUsuarioRechazo(usuarioComprador.Correo, usuarioComprador.Nombre, idOrden);
+                System.Console.WriteLine("Correo de rechazo enviado.");
+            }
 
             return RedirectToAction("Index");
         }
+
     }
 }

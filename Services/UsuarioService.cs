@@ -179,6 +179,21 @@ namespace SistemaOrdenes.Services
             return usuario;
         }
 
+        public async Task<TbUsuario> ObtenerDatosUserPorID(int id)
+        {
+
+            var usuario = await context.TbUsuarios
+                .Where(x => x.IdUsuario == id)
+                .FirstOrDefaultAsync();
+
+            if (usuario == null)
+                throw new Exception("No se encontró el usuario actual.");
+
+            return usuario;
+        }
+
+
+
 
         //OBTIENE LOS DATOS DEL JEFE DEL USUARIO
         public async Task<TbUsuario> ObtenerDatosJefe()
