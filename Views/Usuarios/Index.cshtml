@@ -91,6 +91,7 @@
                 <th>Nombre Completo</th>
                 <th>Usuario</th>
                 <th>Acción</th>
+                <th>Roll</th>
                 <th>Estado</th>
             </tr>
         </thead>
@@ -105,6 +106,7 @@
                         <a asp-action="Edit" asp-route-id="@usuario.IdUsuario"><i class="fas fa-edit icono-accionEditar"></i></a>
                         <a asp-action="Delete" asp-route-id="@usuario.IdUsuario"><i class="fas fa-trash-alt icono-accionEliminar"></i></a>
                     </td>
+                    <td>@usuario.IdRolNavigation.NombreRol</td>
                     <td>
                         @if (usuario.Estado == true)
                         {
