@@ -57,7 +57,8 @@ namespace SistemaOrdenes.Controllers
                 var claims = new List<Claim>()
                 {
                     new Claim(ClaimTypes.NameIdentifier, usuario.IdUsuario.ToString()),
-                    new Claim(ClaimTypes.Email, usuario.Correo)
+                    new Claim(ClaimTypes.Email, usuario.Correo),
+                    new Claim(ClaimTypes.Name, usuario.Nombre)
                 };
 
                 //SE OBTIENE EL ROL DEL USUARIO

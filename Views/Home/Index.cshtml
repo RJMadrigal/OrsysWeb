@@ -1,9 +1,9 @@
-﻿@{
+﻿@using System.Security.Claims
+@{
     ViewData["Title"] = "Home Page";
 }
 
 
 
-<h1>Bienvenido al sistema</h1>
-<h3>Este es el módulo del administrador</h3>
+<h1>Bienvenido al sistema, @User.FindFirst(ClaimTypes.Name)?.Value.</h1>
  
