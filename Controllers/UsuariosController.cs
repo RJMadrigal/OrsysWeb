@@ -35,6 +35,12 @@ namespace SistemaOrdenes.Controllers
             _usuarioService = usuarioService;
         }
 
+        [HttpGet]
+        public IActionResult AcercaDe()
+        {
+            return View();
+        }
+
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
