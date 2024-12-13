@@ -218,14 +218,29 @@ namespace SistemaOrdenes.Controllers
                 return NotFound();
             }
 
+            //VERIFICA SI EL USUARIO ESTA ASOCIADO A OTRA TABLA
+
+            
+            
+
+
             //SE ELIMINA EL USUARIO UTILIZANDO EF Y SE ENVIA EL MODELO
-            _context.TbUsuarios.Remove(usuarios);
+            try
+            {
+                _context.TbUsuarios.Remove(usuarios);
 
-            //SE GUARDA LOS CAMBIOS
-            await _context.SaveChangesAsync();
+                //SE GUARDA LOS CAMBIOS
+                await _context.SaveChangesAsync();
 
-            //SE REDIRIGE AL INDEX
-            return RedirectToAction("Index");
+                //SE REDIRIGE AL INDEX
+                return RedirectToAction("Index");
+            }catch(Exception ex)
+            {
+                // Retornar mensaje de error
+                ViewBag.Mensaje = "Error, usuario asociado a otros datos";
+                return View(usuarios);
+            }
+            
         }
 
  

@@ -8,6 +8,7 @@
     <div class="card" style="background-color: rgba(42, 42, 42, 0.8); color: white; width: 30rem;">
         <div class="card-body text-center">
             <h2 class="card-title">¿Estás seguro de que deseas eliminar el usuario?</h2>
+            
             <form asp-action="Delete">
                 <input type="hidden" asp-for="IdUsuario" />
                 <div class="actions">
@@ -15,6 +16,9 @@
                     <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
                 </div>
             </form>
+            <br />
+            <h3 style="color:red">@ViewBag.Mensaje</h3>
+
         </div>
     </div>
 </div>
