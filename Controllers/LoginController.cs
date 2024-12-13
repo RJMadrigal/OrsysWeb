@@ -48,10 +48,18 @@ namespace SistemaOrdenes.Controllers
 
             //SE OBTIENE EL USUARIO
             var usuario = await _usuarioData.ObtenerUsuarioPorCredenciales(modelo.Correo, HashSHA256.CSHA256(modelo.Clave));
+            
+            
 
             //SE VALIDA QUE NO SEA NULO
             if (usuario != null)
             {
+                if (usuario.Estado == false)
+                {
+                    ModelState.AddModelError(string.Empty, "E; usuario está desactivado");
+                    return View(modelo);
+                }
+
 
                 //SE CONFIGURA LOS CLAIMS
                 var claims = new List<Claim>()
