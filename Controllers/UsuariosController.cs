@@ -218,12 +218,6 @@ namespace SistemaOrdenes.Controllers
                 return NotFound();
             }
 
-            //VERIFICA SI EL USUARIO ESTA ASOCIADO A OTRA TABLA
-
-            
-            
-
-
             //SE ELIMINA EL USUARIO UTILIZANDO EF Y SE ENVIA EL MODELO
             try
             {
