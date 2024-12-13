@@ -36,6 +36,7 @@ namespace SistemaOrdenes.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult AcercaDe()
         {
             return View();

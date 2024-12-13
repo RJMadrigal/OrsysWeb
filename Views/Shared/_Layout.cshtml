@@ -28,7 +28,7 @@
         color: white; /* Color del texto */
         text-align: center; /* Centra el texto */
         margin: 10px auto; /* Centrado en la barra */
-        max-width: 120px; /* Ajusta el tamaño del contenedor */
+        max-width: 220px; /* Ajusta el tamaño del contenedor */
     }
 
     .user-icon {
@@ -47,15 +47,20 @@
 
 <body>
     <div class="layout d-flex flex-nowrap" style="min-height: 100vh;">
+        
+
         <!-- Barra lateral -->
         <aside class="sidebar" style="width: 250px;">
+
             <div class="menu">
 
 
                 <div class="user-profile">
                     <i class="fa-solid fa-user-circle user-icon"></i>
                     <p class="user-name">@User.FindFirst(ClaimTypes.Name)?.Value</p>
+                    <p class="user-name">@User.FindFirstValue(ClaimTypes.Role)</p>
                 </div>
+                <hr style="color: white" />
 
 
                 <!-- VISTAS DE ADMIN -->

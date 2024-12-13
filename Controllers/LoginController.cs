@@ -56,21 +56,23 @@ namespace SistemaOrdenes.Controllers
             {
                 if (usuario.Estado == false)
                 {
-                    ModelState.AddModelError(string.Empty, "E; usuario está desactivado");
+                    ModelState.AddModelError(string.Empty, "El usuario está desactivado");
                     return View(modelo);
                 }
 
+                //SE OBTIENE EL ROL DEL USUARIO
+                var rol = await _usuarioData.ObtenerRolPorId(usuario.IdUsuario); //SE OBTIENE EL ROL DEL USUARIO
 
                 //SE CONFIGURA LOS CLAIMS
                 var claims = new List<Claim>()
                 {
                     new Claim(ClaimTypes.NameIdentifier, usuario.IdUsuario.ToString()),
                     new Claim(ClaimTypes.Email, usuario.Correo),
-                    new Claim(ClaimTypes.Name, usuario.Nombre)
+                    new Claim(ClaimTypes.Name, usuario.Nombre),
+                    new Claim(ClaimTypes.Role, rol)
                 };
 
-                //SE OBTIENE EL ROL DEL USUARIO
-                var rol = await _usuarioData.ObtenerRolPorId(usuario.IdUsuario); //SE OBTIENE EL ROL DEL USUARIO
+                
 
                 //SE VERIFICA SI EL ROL ES NULL
                 if(rol != null)
