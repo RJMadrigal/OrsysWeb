@@ -14,9 +14,18 @@ public partial class TbUsuario
     [Required(ErrorMessage = "El campo {0} es obligatorio")]
     public string Usuario { get; set; } = null!;
 
+
+
+    [EmailAddress(ErrorMessage = "Debe ingresar un correo electrónico válido.")]
     [Required(ErrorMessage = "El campo {0} es obligatorio")]
     public string Correo { get; set; } = null!;
 
+
+
+    [Required(ErrorMessage = "La contraseña es obligatoria.")]
+    [StringLength(100, ErrorMessage = "La contraseña debe tener entre {2} y {1} caracteres.", MinimumLength = 8)]
+    [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$",
+        ErrorMessage = "La contraseña debe tener al menos una letra, un número y un mínimo de 8 caracteres.")]
     public string Clave { get; set; } = null!;
 
     public bool? Restablecer { get; set; }

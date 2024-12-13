@@ -81,11 +81,9 @@
 
     <hr />
 
-    <div class="d-flex justify-content-between mb-3">
-        <input type="text" class="form-control search-input" placeholder="Buscar" style="width: 300px;">
-    </div>
+    
 
-    <table class="table table-dark table-hover">
+    <table class="table table-dark table-hover" id="ordenesJefesTable">
         <thead>
             <tr>
                 <th>#Orden</th>
@@ -131,3 +129,25 @@
         </tbody>
     </table>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const table = document.querySelector("#ordenesJefesTable");
+            const dataTable = new simpleDatatables.DataTable(table, {
+                searchable: true,
+                fixedHeight: true,
+                perPage: 10,
+                labels: {
+                    placeholder: "Buscar...",
+                    perPage: "Registros por página",
+                    noRows: "No se encontraron resultados",
+                    info: "Mostrando {start} a {end} de {rows} registros"
+                }
+            });
+        });
+    </script>
+}

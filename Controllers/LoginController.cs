@@ -48,20 +48,31 @@ namespace SistemaOrdenes.Controllers
 
             //SE OBTIENE EL USUARIO
             var usuario = await _usuarioData.ObtenerUsuarioPorCredenciales(modelo.Correo, HashSHA256.CSHA256(modelo.Clave));
+            
+            
 
             //SE VALIDA QUE NO SEA NULO
             if (usuario != null)
             {
+                if (usuario.Estado == false)
+                {
+                    ModelState.AddModelError(string.Empty, "El usuario está desactivado");
+                    return View(modelo);
+                }
+
+                //SE OBTIENE EL ROL DEL USUARIO
+                var rol = await _usuarioData.ObtenerRolPorId(usuario.IdUsuario); //SE OBTIENE EL ROL DEL USUARIO
 
                 //SE CONFIGURA LOS CLAIMS
                 var claims = new List<Claim>()
                 {
                     new Claim(ClaimTypes.NameIdentifier, usuario.IdUsuario.ToString()),
-                    new Claim(ClaimTypes.Email, usuario.Correo)
+                    new Claim(ClaimTypes.Email, usuario.Correo),
+                    new Claim(ClaimTypes.Name, usuario.Nombre),
+                    new Claim(ClaimTypes.Role, rol)
                 };
 
-                //SE OBTIENE EL ROL DEL USUARIO
-                var rol = await _usuarioData.ObtenerRolPorId(usuario.IdUsuario); //SE OBTIENE EL ROL DEL USUARIO
+                
 
                 //SE VERIFICA SI EL ROL ES NULL
                 if(rol != null)
