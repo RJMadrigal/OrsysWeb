@@ -35,6 +35,13 @@ namespace SistemaOrdenes.Controllers
             _usuarioService = usuarioService;
         }
 
+        [HttpGet]
+        [Authorize]
+        public IActionResult AcercaDe()
+        {
+            return View();
+        }
+
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
@@ -213,13 +220,22 @@ namespace SistemaOrdenes.Controllers
             }
 
             //SE ELIMINA EL USUARIO UTILIZANDO EF Y SE ENVIA EL MODELO
-            _context.TbUsuarios.Remove(usuarios);
+            try
+            {
+                _context.TbUsuarios.Remove(usuarios);
 
-            //SE GUARDA LOS CAMBIOS
-            await _context.SaveChangesAsync();
+                //SE GUARDA LOS CAMBIOS
+                await _context.SaveChangesAsync();
 
-            //SE REDIRIGE AL INDEX
-            return RedirectToAction("Index");
+                //SE REDIRIGE AL INDEX
+                return RedirectToAction("Index");
+            }catch(Exception ex)
+            {
+                // Retornar mensaje de error
+                ViewBag.Mensaje = "Error, usuario asociado a otros datos";
+                return View(usuarios);
+            }
+            
         }
 
  

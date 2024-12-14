@@ -14,7 +14,13 @@
 
 <div class="login-container">
     <div class="login-box">
+
+
+
         <form asp-action="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger" style="color: red"></div>
+
+
             <div class="input-box">
                 <label asp-for="Correo" for="usuario">Usuario</label>
                 <input asp-for="Correo" type="text" id="usuario" placeholder="Usuario" required>

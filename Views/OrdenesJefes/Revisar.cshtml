@@ -129,7 +129,7 @@
 <hr />
 
 <div class="container">
-    <h1>Orden 001</h1>
+    <h1>Orden</h1>
     <table>
         <thead>
             <tr>
@@ -153,8 +153,8 @@
 
 
     <div class="comentarios">
-        <label for="comentarios">Comentarios</label>
-        <textarea id="comentarios" rows="3" contenteditable="false">@Model.Detalles</textarea>
+        <label for="comentarios">Comentarios del solicitante</label>
+        <textarea id="comentarios" rows="3" contenteditable="false" readonly>@Model.Detalles</textarea>
     </div>
 
     <form asp-action="ActualizarOrden" method="post">

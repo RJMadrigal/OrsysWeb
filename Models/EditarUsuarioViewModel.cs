@@ -10,6 +10,8 @@ namespace SistemaOrdenes.Models
 
         public string Usuario { get; set; }
 
+        [EmailAddress(ErrorMessage = "Debe ingresar un correo electrónico válido.")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string Correo { get; set; }
 
         public bool? Restablecer { get; set; }
